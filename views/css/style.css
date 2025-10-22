@@ -22,13 +22,14 @@ body {
 
 .nav-link {
     font-weight: 500;
-    transition: all 0.3s ease;
+    /*transition: all 0.3s ease;*/
     margin: 0 5px;
+    color: #C8C4C1;
 }
 
 .nav-link:hover {
     color: var(--accent-color) !important;
-    transform: translateY(-2px);
+    /*transform: translateY(-2px);*/
 }
 
 /* Carrusel */
@@ -50,6 +51,7 @@ body {
 }
 
 /* Cards */
+/*
 .card-custom {
     transition: all 0.3s ease;
 }
@@ -73,12 +75,12 @@ body {
     transform: scale(1.1) rotate(5deg);
 }
 
-/* Botones */
+/* Botones *
 .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(242, 131, 34, 0.4);
 }
-
+*/
 /* Formularios */
 .form-control:focus,
 .form-select:focus {
@@ -105,7 +107,7 @@ body {
     }
 }
 
-/* Animaciones */
+/* Animaciones *
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -121,9 +123,10 @@ body {
     animation: fadeIn 0.5s ease-out;
 }
 
-/* Alerta personalizada */
+/* Alerta personalizada *
 .alert {
     border-radius: 10px;
     border: none;
     font-weight: 500;
 }
+*/

@@ -3,13 +3,9 @@ require_once 'models/Platillo.php';
 
 class MenuController {
     public function index() {
-        $pageTitle = "Menú - Las Tres Esencias";
+        $pageTitle = "Menú - Tres Esencias";
         
-        // Obtener platillos desde el modelo (cuando esté conectado a BD)
-        // $platilloModel = new Platillo();
-        // $platillos = $platilloModel->obtenerTodos();
-        
-        // Por ahora, datos estáticos para prueba
+        //pendiente - ejemplos
         $platillos = [
             [
                 'id' => 1,

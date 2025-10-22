@@ -3,9 +3,9 @@ require_once 'models/Promocion.php';
 
 class PromocionController {
     public function index() {
-        $pageTitle = "Promociones - Las Tres Esencias";
+        $pageTitle = "Promociones - Tres Esencias";
         
-        // Datos estáticos para prueba
+        // ejemplos
         $promociones = [
             [
                 'id' => 1,
