@@ -19,6 +19,35 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <?php if (isset($_SESSION['es_recepcion']) && $_SESSION['es_recepcion'] === true): ?>
+                    <!-- Menú para Recepción -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=recepcion">
+                            <i class="bi bi-speedometer2"></i> Panel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=recepcion&action=clientes">
+                            <i class="bi bi-people"></i> Clientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=recepcion&action=reservaciones">
+                            <i class="bi bi-calendar-check"></i> Reservaciones
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-workspace"></i> <?php echo $_SESSION['recepcion_nombre']; ?>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="index.php?controller=auth&action=logout">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                            </a></li>
+                        </ul>
+                    </li>
+                    <?php else: ?>
+                    <!-- Menú para Clientes -->
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?controller=inicio">Inicio</a>
                     </li>
@@ -31,12 +60,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?controller=promocion">Promociones</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=calificacion">Califícanos</a>
+                    </li>
                     <?php if (isset($_SESSION['usuario_id'])): ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> <?php echo $_SESSION['usuario_nombre']; ?>
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="index.php?controller=reservacion">Mis Reservaciones</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="index.php?controller=auth&action=logout">Cerrar Sesión</a></li>
                         </ul>
                     </li>
@@ -46,6 +80,7 @@
                             <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
                         </a>
                     </li>
+                    <?php endif; ?>
                     <?php endif; ?>
                 </ul>
             </div>

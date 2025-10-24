@@ -24,27 +24,68 @@
             </div>
         </div>
     </div>
+
+    <?php if (isset($_SESSION['usuario_id'])): ?>
+    <!-- Mis Reservaciones -->
+    <div class="card mb-4 shadow border-0">
+        <div class="card-body p-4">
+            <h3 class="fw-bold mb-4" style="color: #F28322;">Mis Reservaciones</h3>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead style="background-color: #8C451C; color: white;">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Mesa</th>
+                            <th>Personas</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Ejemplo de reservaciones - aquí irán las del usuario -->
+                        <tr>
+                            <td>25/10/2025</td>
+                            <td>19:00</td>
+                            <td>Mesa 5</td>
+                            <td>4 personas</td>
+                            <td><span class="badge bg-success">Confirmada</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" onclick="editarReservacion(1)">
+                                    <i class="bi bi-pencil"></i> Editar
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="cancelarReservacion(1)">
+                                    <i class="bi bi-x-circle"></i> Cancelar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
     
-    <!-- Reservación -->
+    <!-- Formulario de Reservación -->
     <div class="card shadow border-0">
         <div class="card-body p-5">
-            <h3 class="fw-bold mb-4" style="color: #F28322;">Reservación en Línea</h3>
+            <h3 class="fw-bold mb-4" style="color: #F28322;">Nueva Reservación</h3>
             
             <form action="index.php?controller=reservacion&action=crear" method="POST" id="formReservacion">
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Fecha</label>
-                        <input type="date" name="fecha" class="form-control form-control-lg" required 
+                        <input type="date" name="fecha" id="fecha" class="form-control form-control-lg" required 
                                min="<?php echo date('Y-m-d'); ?>">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Hora</label>
-                        <input type="time" name="hora" class="form-control form-control-lg" required
+                        <input type="time" name="hora" id="hora" class="form-control form-control-lg" required
                                min="13:00" max="22:00">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Personas</label>
-                        <select name="personas" class="form-select form-select-lg" required>
+                        <select name="personas" id="personas" class="form-select form-select-lg" required onchange="filtrarMesas()">
                             <option value="">Seleccionar</option>
                             <?php for($i = 1; $i <= 8; $i++): ?>
                             <option value="<?php echo $i; ?>">
@@ -55,12 +96,13 @@
                     </div>
                 </div>
                 
-                <!-- Mesas-->
-                <div class="mb-4">
-                    <h4 class="fw-bold mb-3">Mesas</h4>
-                    <div class="row g-3">
+                <!-- Mesas disponibles -->
+                <div class="mb-4" id="contenedorMesas">
+                    <h4 class="fw-bold mb-3">Selecciona una mesa</h4>
+                    <p class="text-muted">Primero selecciona el número de personas para ver las mesas disponibles</p>
+                    <div class="row g-3" id="listaMesas">
                         <?php foreach ($mesas as $mesa): ?>
-                        <div class="col-md-2 col-6">
+                        <div class="col-md-2 col-6 mesa-item" data-capacidad="<?php echo $mesa['capacidad']; ?>" style="display: none;">
                             <input type="radio" class="btn-check" name="mesa_id" id="mesa<?php echo $mesa['id']; ?>" 
                                    value="<?php echo $mesa['id']; ?>" required
                                    <?php echo !$mesa['disponible'] ? 'disabled' : ''; ?>>
@@ -77,13 +119,61 @@
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-lg w-100 fw-bold text-white" style="background-color: #F28322; border: none; margin-bottom: 10px;">
-                    <i class="bi bi-calendar-check"></i> Enviar reservación al correo
-                </button>
-                <button type="submit" class="btn btn-lg w-100 fw-bold text-white" style="background-color: #F28322; border: none;">
-                    <i class="bi bi-calendar-check"></i> Enviar reservación al número de celular
-                </button>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <button type="submit" name="envio" value="email" class="btn btn-lg w-100 fw-bold text-white" style="background-color: #F28322; border: none;">
+                            <i class="bi bi-envelope"></i> Enviar al correo
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="submit" name="envio" value="whatsapp" class="btn btn-lg w-100 fw-bold text-white" style="background-color: #25D366; border: none;">
+                            <i class="bi bi-whatsapp"></i> Enviar por WhatsApp
+                        </button>
+                    </div>
+                </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar reservación -->
+<div class="modal fade" id="modalEditarReservacion" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #8C451C; color: white;">
+                <h5 class="modal-title">Editar Reservación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarReservacion">
+                    <input type="hidden" name="reservacion_id" id="edit_reservacion_id">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Fecha</label>
+                            <input type="date" name="fecha" id="edit_fecha" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Hora</label>
+                            <input type="time" name="hora" id="edit_hora" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Personas</label>
+                            <select name="personas" id="edit_personas" class="form-select" required>
+                                <?php for($i = 1; $i <= 8; $i++): ?>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn text-white" style="background-color: #F28322;" onclick="guardarEdicion()">
+                    Guardar cambios
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -94,5 +184,86 @@
         border-color: #F28322 !important;
         color: white !important;
     }
-    
 </style>
+
+<script>
+// Filtrar mesas según capacidad seleccionada
+function filtrarMesas() {
+    const personas = parseInt(document.getElementById('personas').value);
+    const mesas = document.querySelectorAll('.mesa-item');
+    
+    if (!personas) {
+        mesas.forEach(mesa => mesa.style.display = 'none');
+        return;
+    }
+    
+    let hayMesasDisponibles = false;
+    mesas.forEach(mesa => {
+        const capacidad = parseInt(mesa.getAttribute('data-capacidad'));
+        if (capacidad >= personas) {
+            mesa.style.display = 'block';
+            hayMesasDisponibles = true;
+        } else {
+            mesa.style.display = 'none';
+        }
+    });
+    
+    if (!hayMesasDisponibles) {
+        alert('No hay mesas disponibles para ' + personas + ' personas');
+    }
+}
+
+// Editar reservación
+function editarReservacion(id) {
+    // Aquí cargarías los datos de la reservación desde el servidor
+    document.getElementById('edit_reservacion_id').value = id;
+    document.getElementById('edit_fecha').value = '2025-10-25';
+    document.getElementById('edit_hora').value = '19:00';
+    document.getElementById('edit_personas').value = '4';
+    
+    const modal = new bootstrap.Modal(document.getElementById('modalEditarReservacion'));
+    modal.show();
+}
+
+function guardarEdicion() {
+    const form = document.getElementById('formEditarReservacion');
+    const formData = new FormData(form);
+    
+    // Aquí enviarías los datos al servidor
+    fetch('index.php?controller=reservacion&action=editar', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Reservación actualizada exitosamente');
+            location.reload();
+        } else {
+            alert('Error al actualizar la reservación');
+        }
+    });
+}
+
+// Cancelar reservación
+function cancelarReservacion(id) {
+    if (confirm('¿Estás seguro de que deseas cancelar esta reservación?')) {
+        fetch('index.php?controller=reservacion&action=cancelar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'reservacion_id=' + id
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Reservación cancelada exitosamente');
+                location.reload();
+            } else {
+                alert('Error al cancelar la reservación');
+            }
+        });
+    }
+}
+</script>

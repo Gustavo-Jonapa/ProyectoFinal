@@ -12,6 +12,7 @@ class AuthController {
             if ($email === 'gustavo.jonapa24@unach.mx' && $password === 'iewlrgs7V_') {
                 $_SESSION['usuario_id'] = 1;
                 $_SESSION['usuario_nombre'] = 'Nombre';
+                $_SESSION['es_recepcion'] = false; // Usuario normal, no recepción
                 $_SESSION['mensaje'] = "Bienvenido!";
                 header('Location: index.php?controller=inicio');
                 exit();
@@ -41,9 +42,46 @@ class AuthController {
     }
     
     public function logout() {
+        $esRecepcion = isset($_SESSION['es_recepcion']) && $_SESSION['es_recepcion'] === true;
         session_destroy();
-        header('Location: index.php?controller=inicio');
+        
+        if ($esRecepcion) {
+            header('Location: index.php?controller=auth&action=mostrarLoginRecepcion');
+        } else {
+            header('Location: index.php?controller=inicio');
+        }
         exit();
+    }
+    
+    public function loginRecepcion() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $usuario = $_POST['usuario'] ?? '';
+            $password = $_POST['password'] ?? '';
+            
+            // Validación - pendiente integrar con BD
+            if ($usuario === 'recepcion' && $password === 'recepcion123') {
+                $_SESSION['recepcion_id'] = 1;
+                $_SESSION['recepcion_nombre'] = 'Recepcionista';
+                $_SESSION['es_recepcion'] = true;
+                $_SESSION['mensaje'] = "Bienvenido al panel de recepción";
+                header('Location: index.php?controller=recepcion');
+                exit();
+            } else {
+                $_SESSION['error'] = "Credenciales incorrectas";
+            }
+        }
+        
+        $pageTitle = "Acceso Recepción - Tres Esencias";
+        require_once "views/layouts/header.php";
+        require_once "views/autentificacion/login_recepcion.php";
+        require_once "views/layouts/footer.php";
+    }
+    
+    public function mostrarLoginRecepcion() {
+        $pageTitle = "Acceso Recepción - Tres Esencias";
+        require_once "views/layouts/header.php";
+        require_once "views/autentificacion/login_recepcion.php";
+        require_once "views/layouts/footer.php";
     }
 }
 ?>

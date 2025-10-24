@@ -34,9 +34,80 @@ class ReservacionController {
                 exit();
             }
             
-            // pendiente
-            $_SESSION['mensaje'] = "Reservación creada exitosamente";
+            $fecha = $_POST['fecha'] ?? '';
+            $hora = $_POST['hora'] ?? '';
+            $personas = $_POST['personas'] ?? '';
+            $mesa_id = $_POST['mesa_id'] ?? '';
+            $envio = $_POST['envio'] ?? 'email';
+            
+            // Validación
+            if (empty($fecha) || empty($hora) || empty($personas) || empty($mesa_id)) {
+                $_SESSION['error'] = "Todos los campos son obligatorios";
+                header('Location: index.php?controller=reservacion');
+                exit();
+            }
+            
+            // Aquí se guardaría en la BD
+            // $reservacion = new Reservacion();
+            // $resultado = $reservacion->crear([...]);
+            
+            if ($envio === 'whatsapp') {
+                $_SESSION['mensaje'] = "Reservación creada exitosamente. Se enviará confirmación por WhatsApp.";
+            } else {
+                $_SESSION['mensaje'] = "Reservación creada exitosamente. Se enviará confirmación por email.";
+            }
+            
             header('Location: index.php?controller=reservacion');
+            exit();
+        }
+    }
+    
+    public function editar() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['usuario_id'])) {
+                echo json_encode(['success' => false, 'message' => 'No autorizado']);
+                exit();
+            }
+            
+            $reservacion_id = $_POST['reservacion_id'] ?? '';
+            $fecha = $_POST['fecha'] ?? '';
+            $hora = $_POST['hora'] ?? '';
+            $personas = $_POST['personas'] ?? '';
+            
+            // Validación
+            if (empty($reservacion_id) || empty($fecha) || empty($hora) || empty($personas)) {
+                echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
+                exit();
+            }
+            
+            // Aquí se actualizaría en la BD
+            // $reservacion = new Reservacion();
+            // $resultado = $reservacion->actualizar($reservacion_id, [...]);
+            
+            echo json_encode(['success' => true, 'message' => 'Reservación actualizada']);
+            exit();
+        }
+    }
+    
+    public function cancelar() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['usuario_id'])) {
+                echo json_encode(['success' => false, 'message' => 'No autorizado']);
+                exit();
+            }
+            
+            $reservacion_id = $_POST['reservacion_id'] ?? '';
+            
+            if (empty($reservacion_id)) {
+                echo json_encode(['success' => false, 'message' => 'ID de reservación no válido']);
+                exit();
+            }
+            
+            // Aquí se cancelaría en la BD
+            // $reservacion = new Reservacion();
+            // $resultado = $reservacion->cancelar($reservacion_id);
+            
+            echo json_encode(['success' => true, 'message' => 'Reservación cancelada']);
             exit();
         }
     }
