@@ -1,7 +1,7 @@
 <?php
     class Database{
         private $host = ".\SQLEXPRESS";
-        private $db_name = "Restaurant";
+        private $db_name = "RESTAURANT";
         private $username = "webmaster";
         private $password = "Unach2025*";
         public $conn;

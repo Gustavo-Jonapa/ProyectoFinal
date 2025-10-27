@@ -3,7 +3,7 @@ require_once 'config/database.php';
 
 class Cliente {
     private $conn;
-    private $table = "clientes";
+    private $table = "CLIENTES";
     
     public function __construct() {
         $database = new Database();
@@ -11,32 +11,80 @@ class Cliente {
     }
     
     public function crear($datos) {
-        // Aquí iría la inserción a la BD
-        // $query = "INSERT INTO " . $this->table . " (nombre, telefono, email, fecha_nacimiento, notas, fecha_registro) 
-        //           VALUES (:nombre, :telefono, :email, :fecha_nacimiento, :notas, GETDATE())";
-        return true;
+        try {
+            $sql = "{CALL SP_INSERT_CLIENTE(?, ?, ?, ?)}";
+            $stmt = $this->conn->prepare($sql);
+            
+            $stmt->bindParam(1, $datos['nombre']);
+            $stmt->bindParam(2, $datos['apellido']);
+            $stmt->bindParam(3, $datos['telefono']);
+            $stmt->bindParam(4, $datos['email']);
+            
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch(PDOException $e) {
+            return ['Status' => 'ERROR', 'Mensaje' => $e->getMessage()];
+        }
     }
     
     public function obtenerTodos() {
-        // Aquí iría la consulta a la BD
-        return [];
+        try {
+            $sql = "{CALL SP_SELECT_CLIENTES()}";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            return [];
+        }
     }
     
     public function buscar($termino) {
-        // Aquí iría la búsqueda en la BD
-        // $query = "SELECT * FROM " . $this->table . " 
-        //           WHERE nombre LIKE :termino OR telefono LIKE :termino OR email LIKE :termino";
-        return [];
+        try {
+            $sql = "{CALL SP_BUSCAR_CLIENTE(?)}";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(1, $termino);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            return [];
+        }
     }
     
     public function obtenerPorId($id) {
-        // Aquí iría la consulta específica
-        return null;
+        try {
+            $sql = "{CALL SP_SELECT_CLIENTES(?)}";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            return null;
+        }
     }
     
     public function actualizar($id, $datos) {
-        // Aquí iría la actualización en la BD
-        return true;
+        try {
+            $sql = "{CALL SP_UPDATE_CLIENTE(?, ?, ?, ?, ?)}";
+            $stmt = $this->conn->prepare($sql);
+            
+            $stmt->bindParam(1, $id);
+            $stmt->bindParam(2, $datos['nombre']);
+            $stmt->bindParam(3, $datos['apellido']);
+            $stmt->bindParam(4, $datos['telefono']);
+            $stmt->bindParam(5, $datos['email']);
+            
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch(PDOException $e) {
+            return ['Status' => 'ERROR', 'Mensaje' => $e->getMessage()];
+        }
     }
 }
 ?>

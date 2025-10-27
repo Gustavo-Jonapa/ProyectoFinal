@@ -30,7 +30,9 @@
                         <?php endif; ?>
                         <div class="d-flex justify-content-between align-items-center">
                             <p class="fs-3 fw-bold mb-0" style="color: #F28322;">$<?php echo number_format($platillo['precio'], 2); ?></p>
-                            
+                            <button class="btn btn-sm text-white" style="background-color: #F28322;">
+                                <i class="bi bi-cart-plus"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
