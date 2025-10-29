@@ -3,13 +3,11 @@
     
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <!-- Formulario de calificación -->
             <div class="card shadow-lg border-0 mb-5">
                 <div class="card-body p-5">
                     <h3 class="text-center mb-4 fw-bold" style="color: #F28322;">Tu opinión es importante para nosotros</h3>
                     
                     <form action="index.php?controller=calificacion&action=enviar" method="POST" id="formCalificacion">
-                        <!-- Calificación con estrellas -->
                         <div class="text-center mb-4">
                             <label class="form-label fw-bold d-block mb-3">Calificación General</label>
                             <div class="rating" id="rating">
@@ -41,7 +39,6 @@
                             <small class="text-muted d-block mt-2">Haz clic en las estrellas para calificar</small>
                         </div>
                         
-                        <!-- Tipo de comentario -->
                         <div class="mb-4">
                             <label class="form-label fw-bold">Tipo de comentario</label>
                             <select name="tipo" class="form-select form-select-lg" required>
@@ -52,14 +49,12 @@
                             </select>
                         </div>
                         
-                        <!-- Comentario -->
                         <div class="mb-4">
                             <label class="form-label fw-bold">Cuéntanos tu experiencia</label>
                             <textarea name="comentario" class="form-control form-control-lg" rows="5" 
                                       placeholder="Escribe aquí tu comentario, sugerencia o queja..." required></textarea>
                         </div>
                         
-                        <!-- Datos de contacto (opcional) -->
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Nombre (opcional)</label>
@@ -80,7 +75,6 @@
                 </div>
             </div>
             
-            <!-- Estadísticas de calificaciones -->
             <div class="card shadow-lg border-0 mb-5">
                 <div class="card-body p-4">
                     <h4 class="fw-bold mb-4" style="color: #8C451C;">Calificación Promedio</h4>
@@ -97,7 +91,6 @@
                             <p class="text-muted">Basado en 150 opiniones</p>
                         </div>
                         <div class="col-md-8">
-                            <!-- Barras de progreso -->
                             <div class="mb-2">
                                 <div class="d-flex align-items-center">
                                     <span class="me-2">5 <i class="bi bi-star-fill" style="color: #FFD700;"></i></span>
@@ -148,12 +141,10 @@
                 </div>
             </div>
             
-            <!-- Comentarios recientes -->
             <div class="card shadow-lg border-0">
                 <div class="card-body p-4">
                     <h4 class="fw-bold mb-4" style="color: #8C451C;">Comentarios Recientes</h4>
                     
-                    <!-- Comentario 1 -->
                     <div class="mb-4 pb-3 border-bottom">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div>
@@ -171,7 +162,6 @@
                         <p class="text-muted mb-0">Excelente servicio y comida deliciosa. El ambiente es muy acogedor y el personal muy atento. Definitivamente regresaremos.</p>
                     </div>
                     
-                    <!-- Comentario 2 -->
                     <div class="mb-4 pb-3 border-bottom">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div>
@@ -189,7 +179,6 @@
                         <p class="text-muted mb-0">Muy buena experiencia. Los platillos tienen muy buen sabor. Solo sugeriría más opciones vegetarianas en el menú.</p>
                     </div>
                     
-                    <!-- Comentario 3 -->
                     <div class="mb-0">
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div>
@@ -213,7 +202,6 @@
 </div>
 
 <style>
-    /* Estrellas de calificación */
     .rating {
         display: inline-flex;
         flex-direction: row-reverse;
@@ -248,7 +236,6 @@
 </style>
 
 <script>
-    // Validación del formulario
     document.getElementById('formCalificacion').addEventListener('submit', function(e) {
         const calificacion = document.querySelector('input[name="calificacion"]:checked');
         

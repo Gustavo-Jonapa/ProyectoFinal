@@ -1,7 +1,6 @@
 <div class="container my-5">
     <h1 class="text-center mb-5 display-4 fw-bold" style="color: #8C451C;">Reservaciones</h1>
     
-    <!-- Contacto -->
     <div class="card mb-4 shadow border-0" style="background: linear-gradient(135deg, #FFF5E1 0%, #FFE4B5 100%);">
         <div class="card-body p-4">
             <h3 class="fw-bold mb-4" style="color: #F28322;">Información de Contacto</h3>
@@ -26,7 +25,6 @@
     </div>
 
     <?php if (isset($_SESSION['usuario_id'])): ?>
-    <!-- Mis Reservaciones -->
     <div class="card mb-4 shadow border-0">
         <div class="card-body p-4">
             <h3 class="fw-bold mb-4" style="color: #F28322;">Mis Reservaciones</h3>
@@ -43,7 +41,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Ejemplo de reservaciones - aquí irán las del usuario -->
                         <tr>
                             <td>25/10/2025</td>
                             <td>19:00</td>
@@ -66,7 +63,6 @@
     </div>
     <?php endif; ?>
     
-    <!-- Formulario de Reservación -->
     <div class="card shadow border-0">
         <div class="card-body p-5">
             <h3 class="fw-bold mb-4" style="color: #F28322;">Nueva Reservación</h3>
@@ -96,7 +92,6 @@
                     </div>
                 </div>
                 
-                <!-- Mesas disponibles -->
                 <div class="mb-4" id="contenedorMesas">
                     <h4 class="fw-bold mb-3">Selecciona una mesa</h4>
                     <p class="text-muted">Primero selecciona el número de personas para ver las mesas disponibles</p>
@@ -137,7 +132,6 @@
     </div>
 </div>
 
-<!-- Modal para editar reservación -->
 <div class="modal fade" id="modalEditarReservacion" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -187,7 +181,6 @@
 </style>
 
 <script>
-// Filtrar mesas según capacidad seleccionada
 function filtrarMesas() {
     const personas = parseInt(document.getElementById('personas').value);
     const mesas = document.querySelectorAll('.mesa-item');
@@ -213,9 +206,7 @@ function filtrarMesas() {
     }
 }
 
-// Editar reservación
 function editarReservacion(id) {
-    // Aquí cargarías los datos de la reservación desde el servidor
     document.getElementById('edit_reservacion_id').value = id;
     document.getElementById('edit_fecha').value = '2025-10-25';
     document.getElementById('edit_hora').value = '19:00';
@@ -229,7 +220,6 @@ function guardarEdicion() {
     const form = document.getElementById('formEditarReservacion');
     const formData = new FormData(form);
     
-    // Aquí enviarías los datos al servidor
     fetch('index.php?controller=reservacion&action=editar', {
         method: 'POST',
         body: formData
@@ -245,7 +235,6 @@ function guardarEdicion() {
     });
 }
 
-// Cancelar reservación
 function cancelarReservacion(id) {
     if (confirm('¿Estás seguro de que deseas cancelar esta reservación?')) {
         fetch('index.php?controller=reservacion&action=cancelar', {

@@ -40,16 +40,15 @@ class ReservacionController {
             $mesa_id = $_POST['mesa_id'] ?? '';
             $envio = $_POST['envio'] ?? 'email';
             
-            // Validación
             if (empty($fecha) || empty($hora) || empty($personas) || empty($mesa_id)) {
                 $_SESSION['error'] = "Todos los campos son obligatorios";
                 header('Location: index.php?controller=reservacion');
                 exit();
             }
-            
-            // Aquí se guardaría en la BD
-            // $reservacion = new Reservacion();
-            // $resultado = $reservacion->crear([...]);
+            $reservacion = new Reservacion();
+            $resultado = $reservacion->crear([
+
+            ]);
             
             if ($envio === 'whatsapp') {
                 $_SESSION['mensaje'] = "Reservación creada exitosamente. Se enviará confirmación por WhatsApp.";
@@ -74,15 +73,15 @@ class ReservacionController {
             $hora = $_POST['hora'] ?? '';
             $personas = $_POST['personas'] ?? '';
             
-            // Validación
             if (empty($reservacion_id) || empty($fecha) || empty($hora) || empty($personas)) {
                 echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
                 exit();
             }
             
-            // Aquí se actualizaría en la BD
-            // $reservacion = new Reservacion();
-            // $resultado = $reservacion->actualizar($reservacion_id, [...]);
+            $reservacion = new Reservacion();
+            $resultado = $reservacion->actualizar($reservacion_id, [
+
+            ]);
             
             echo json_encode(['success' => true, 'message' => 'Reservación actualizada']);
             exit();
@@ -103,9 +102,8 @@ class ReservacionController {
                 exit();
             }
             
-            // Aquí se cancelaría en la BD
-            // $reservacion = new Reservacion();
-            // $resultado = $reservacion->cancelar($reservacion_id);
+            $reservacion = new Reservacion();
+            $resultado = $reservacion->cancelar($reservacion_id);
             
             echo json_encode(['success' => true, 'message' => 'Reservación cancelada']);
             exit();

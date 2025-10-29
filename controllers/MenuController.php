@@ -5,7 +5,7 @@ class MenuController {
     public function index() {
         $pageTitle = "Menú - Tres Esencias";
         
-        //pendiente - ejemplos
+        //pendiente
         $platillos = [
             [
                 'id' => 1,
@@ -65,7 +65,6 @@ class MenuController {
     public function categoria() {
         $categoria = $_GET['cat'] ?? 'platos';
         
-        // Mapeo de categorías
         $categoriaMap = [
             'platos' => 'Platos Fuertes',
             'postres' => 'Postres',
@@ -75,7 +74,7 @@ class MenuController {
         $categoriaNombre = $categoriaMap[$categoria] ?? 'Platos Fuertes';
         $pageTitle = $categoriaNombre . " - Tres Esencias";
         
-        // Datos de ejemplo - aquí se consultarían de la BD
+        // pendiente conexion con la base de datos
         $todosPlatillos = [
             [
                 'id' => 1,
@@ -127,7 +126,6 @@ class MenuController {
             ]
         ];
         
-        // Filtrar por categoría
         $platillos = array_filter($todosPlatillos, function($p) use ($categoriaNombre) {
             return $p['categoria'] === $categoriaNombre;
         });

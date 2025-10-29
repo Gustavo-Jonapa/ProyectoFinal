@@ -11,7 +11,6 @@
         </div>
     </div>
 
-    <!-- Filtros -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <div class="row g-3">
@@ -43,7 +42,6 @@
         </div>
     </div>
 
-    <!-- Estadísticas rápidas -->
     <div class="row g-3 mb-4">
         <div class="col-md-3">
             <div class="card text-white bg-success">
@@ -79,7 +77,6 @@
         </div>
     </div>
 
-    <!-- Tabla de Reservaciones -->
     <div class="card shadow-sm">
         <div class="card-header" style="background-color: #8C451C; color: white;">
             <h5 class="mb-0"><i class="bi bi-calendar-check"></i> Reservaciones</h5>
@@ -100,7 +97,7 @@
                         </tr>
                     </thead>
                     <tbody id="tablaReservaciones">
-                        <!-- Datos de ejemplo -->
+                        <!-- ejemplo -->
                         <tr>
                             <td>1</td>
                             <td>Juan Pérez</td>
@@ -183,7 +180,6 @@
     </div>
 </div>
 
-<!-- Modal Nueva Reservación -->
 <div class="modal fade" id="modalNuevaReservacion" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -198,7 +194,6 @@
                             <label class="form-label fw-bold">Cliente *</label>
                             <select name="id_cliente" class="form-select" required>
                                 <option value="">Seleccionar cliente...</option>
-                                <!-- Se llenarían desde BD -->
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -221,7 +216,6 @@
                             <label class="form-label fw-bold">Mesa *</label>
                             <select name="mesa_id" class="form-select" required>
                                 <option value="">Seleccionar mesa...</option>
-                                <!-- Se llenarían desde BD -->
                             </select>
                         </div>
                     </div>
@@ -243,7 +237,6 @@ function filtrarReservaciones() {
     const estado = document.getElementById('filtroEstado').value;
     const cliente = document.getElementById('filtroCliente').value;
     
-    // Implementar filtrado
     console.log('Filtrar:', {fecha, estado, cliente});
 }
 
@@ -257,14 +250,12 @@ function editarReservacion(id) {
 
 function confirmarReservacion(id) {
     if (confirm('¿Confirmar esta reservación?')) {
-        // Implementar confirmación
         alert('Reservación confirmada - ID: ' + id);
     }
 }
 
 function cancelarReservacion(id) {
     if (confirm('¿Estás seguro de cancelar esta reservación?')) {
-        // Implementar cancelación
         alert('Reservación cancelada - ID: ' + id);
     }
 }

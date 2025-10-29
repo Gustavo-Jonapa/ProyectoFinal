@@ -1,7 +1,6 @@
 <div class="container my-5">
     <h1 class="text-center mb-5 display-4 fw-bold" style="color: #8C451C;">Nuestro Menú</h1>
     
-    <!-- Navegación por categorías -->
     <div class="row g-3 mb-5">
         <div class="col-md-4">
             <a href="index.php?controller=menu&action=categoria&cat=platos" class="text-decoration-none">
@@ -46,7 +45,6 @@
         </div>
     </div>
     
-    <!-- Sección de destacados -->
     <div class="text-center mb-4">
         <h2 class="fw-bold" style="color: #8C451C;">Platillos Destacados</h2>
         <p class="text-muted">Los favoritos de nuestros clientes</p>
@@ -54,7 +52,6 @@
     
     <div class="row g-4">
         <?php 
-        // Mostrar solo algunos platillos destacados
         $destacados = array_slice($platillos, 0, 3);
         foreach ($destacados as $platillo): 
         ?>

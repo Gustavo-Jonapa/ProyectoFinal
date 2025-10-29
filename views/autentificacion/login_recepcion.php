@@ -43,7 +43,6 @@
                 </div>
             </div>
             
-            <!-- Información adicional -->
             <div class="card mt-3 border-0" style="background-color: #FFF5E1;">
                 <div class="card-body text-center">
                     <small class="text-muted">

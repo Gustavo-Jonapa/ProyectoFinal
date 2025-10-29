@@ -35,13 +35,6 @@
                             </a>
                         </p>
                     </form>
-                    <!--
-                    <div class="alert alert-info mt-3" role="alert">
-                        <small><strong>Datos de prueba:</strong><br>
-                        Email: admin@test.com<br>
-                        Contraseña: 123456</small>
-                    </div>
--->
                 </div>
             </div>
         </div>

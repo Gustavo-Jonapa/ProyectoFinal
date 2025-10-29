@@ -28,7 +28,6 @@
         </div>
     </div>
 
-    <!-- Tabla de Clientes -->
     <div class="card shadow-sm">
         <div class="card-header" style="background-color: #8C451C; color: white;">
             <h5 class="mb-0"><i class="bi bi-people"></i> Lista de Clientes</h5>
@@ -47,7 +46,6 @@
                         </tr>
                     </thead>
                     <tbody id="tablaClientes">
-                        <!-- Datos de ejemplo -->
                         <tr>
                             <td>1</td>
                             <td>Juan</td>
@@ -90,8 +88,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal Nuevo Cliente -->
 <div class="modal fade" id="modalNuevoCliente" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -131,7 +127,6 @@
     </div>
 </div>
 
-<!-- Modal Ver Cliente -->
 <div class="modal fade" id="modalVerCliente" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -140,7 +135,6 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="detalleCliente">
-                <!-- Aquí se cargará la información -->
             </div>
         </div>
     </div>
@@ -159,25 +153,21 @@ function buscarClientes() {
     })
     .then(response => response.json())
     .then(data => {
-        // Aquí se actualizaría la tabla con los resultados
         console.log(data);
     });
 }
 
 function verCliente(id) {
-    // Cargar información del cliente
     const modal = new bootstrap.Modal(document.getElementById('modalVerCliente'));
     modal.show();
 }
 
 function editarCliente(id) {
-    // Implementar edición
     alert('Función de edición - Cliente ID: ' + id);
 }
 
 function eliminarCliente(id) {
     if (confirm('¿Estás seguro de eliminar este cliente?')) {
-        // Implementar eliminación
         alert('Cliente eliminado - ID: ' + id);
     }
 }

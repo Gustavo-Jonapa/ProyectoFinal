@@ -18,17 +18,21 @@ class CalificacionController {
             $nombre = $_POST['nombre'] ?? 'Anónimo';
             $email = $_POST['email'] ?? '';
             
-            // Validación básica
             if (empty($calificacion) || empty($tipo) || empty($comentario)) {
                 $_SESSION['error'] = "Por favor completa todos los campos obligatorios";
                 header('Location: index.php?controller=calificacion');
                 exit();
             }
             
-            // Aquí se guardaría en la base de datos
-            // $calificacionModel = new Calificacion();
-            // $resultado = $calificacionModel->crear([...]);
-            
+            $calificacionModel = new Calificacion();
+            $resultado = $calificacionModel->crear([
+                'calificacion' => $calificacion,
+                'tipo' => $tipo,
+                'comentario' => $comentario,
+                'nombre' => $nombre,
+                'email' => $email
+            ]);
+
             $_SESSION['mensaje'] = "¡Gracias por tu calificación! Tu opinión es muy importante para nosotros.";
             header('Location: index.php?controller=calificacion');
             exit();

@@ -28,7 +28,6 @@
             </div>
         </nav>
 
-        <!-- Contenido principal -->
         <main class="col-md-10 ms-sm-auto px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2 fw-bold" style="color: #8C451C;">Panel de Recepción</h1>
@@ -43,7 +42,6 @@
                 </div>
             </div>
 
-            <!-- Estadísticas rápidas -->
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <div class="card text-white" style="background-color: #F28322;">
@@ -79,7 +77,6 @@
                 </div>
             </div>
 
-            <!-- Acciones rápidas -->
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm">
@@ -119,7 +116,6 @@
                 </div>
             </div>
 
-            <!-- Reservaciones del día -->
             <div class="card shadow-sm">
                 <div class="card-header" style="background-color: #8C451C; color: white;">
                     <h5 class="mb-0"><i class="bi bi-calendar-day"></i> Reservaciones de Hoy</h5>
@@ -196,7 +192,6 @@
     </div>
 </div>
 
-<!-- Modal Registrar Cliente -->
 <div class="modal fade" id="modalRegistrarCliente" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -240,7 +235,6 @@
     </div>
 </div>
 
-<!-- Modal Nueva Reservación -->
 <div class="modal fade" id="modalNuevaReservacion" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -297,7 +291,6 @@
     </div>
 </div>
 
-<!-- Modal Buscar Cliente -->
 <div class="modal fade" id="modalBuscarCliente" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -313,7 +306,6 @@
                     </button>
                 </div>
                 <div id="resultadosBusqueda">
-                    <!-- Resultados aparecerán aquí -->
                 </div>
             </div>
         </div>

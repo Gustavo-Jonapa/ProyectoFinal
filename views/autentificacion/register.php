@@ -57,7 +57,6 @@
 </div>
 
 <script>
-    // Validación de contraseñas
     document.getElementById('formRegister').addEventListener('submit', function(e) {
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm_password').value;

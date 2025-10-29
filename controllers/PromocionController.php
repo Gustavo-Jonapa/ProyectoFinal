@@ -5,7 +5,7 @@ class PromocionController {
     public function index() {
         $pageTitle = "Promociones - Tres Esencias";
         
-        // ejemplos
+        // pendiente conexion con la base de datos
         $promociones = [
             [
                 'id' => 1,

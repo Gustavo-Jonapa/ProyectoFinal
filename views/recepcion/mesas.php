@@ -6,7 +6,6 @@
         </a>
     </div>
 
-    <!-- Estado General -->
     <div class="row g-3 mb-4">
         <div class="col-md-3">
             <div class="card text-white bg-success">
@@ -42,14 +41,12 @@
         </div>
     </div>
 
-    <!-- Vista de Mesas -->
     <div class="card shadow-sm">
         <div class="card-header" style="background-color: #8C451C; color: white;">
             <h5 class="mb-0"><i class="bi bi-table"></i> Estado de Mesas en Tiempo Real</h5>
         </div>
         <div class="card-body p-4">
             <div class="row g-4">
-                <!-- Mesa 1 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-success" style="cursor: pointer;" onclick="gestionarMesa(1)">
                         <div class="card-body text-center" style="background-color: #d4edda;">
@@ -61,7 +58,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 2 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-danger" style="cursor: pointer;" onclick="gestionarMesa(2)">
                         <div class="card-body text-center" style="background-color: #f8d7da;">
@@ -73,7 +69,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 3 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-success" style="cursor: pointer;" onclick="gestionarMesa(3)">
                         <div class="card-body text-center" style="background-color: #d4edda;">
@@ -85,7 +80,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 4 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-warning" style="cursor: pointer;" onclick="gestionarMesa(4)">
                         <div class="card-body text-center" style="background-color: #fff3cd;">
@@ -97,7 +91,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 5 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-danger" style="cursor: pointer;" onclick="gestionarMesa(5)">
                         <div class="card-body text-center" style="background-color: #f8d7da;">
@@ -109,7 +102,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 6 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-warning" style="cursor: pointer;" onclick="gestionarMesa(6)">
                         <div class="card-body text-center" style="background-color: #fff3cd;">
@@ -121,7 +113,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 7 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-danger" style="cursor: pointer;" onclick="gestionarMesa(7)">
                         <div class="card-body text-center" style="background-color: #f8d7da;">
@@ -133,7 +124,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 8 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-success" style="cursor: pointer;" onclick="gestionarMesa(8)">
                         <div class="card-body text-center" style="background-color: #d4edda;">
@@ -145,7 +135,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 9 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-danger" style="cursor: pointer;" onclick="gestionarMesa(9)">
                         <div class="card-body text-center" style="background-color: #f8d7da;">
@@ -157,7 +146,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 10 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-warning" style="cursor: pointer;" onclick="gestionarMesa(10)">
                         <div class="card-body text-center" style="background-color: #fff3cd;">
@@ -169,7 +157,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 11 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-danger" style="cursor: pointer;" onclick="gestionarMesa(11)">
                         <div class="card-body text-center" style="background-color: #f8d7da;">
@@ -181,7 +168,6 @@
                     </div>
                 </div>
 
-                <!-- Mesa 12 -->
                 <div class="col-md-3 col-sm-6">
                     <div class="card border-success" style="cursor: pointer;" onclick="gestionarMesa(12)">
                         <div class="card-body text-center" style="background-color: #d4edda;">
@@ -197,7 +183,6 @@
     </div>
 </div>
 
-<!-- Modal Gestionar Mesa -->
 <div class="modal fade" id="modalGestionarMesa" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -243,8 +228,6 @@ function gestionarMesa(idMesa) {
     document.getElementById('mesa_id').value = idMesa;
     document.getElementById('tituloModal').textContent = 'Gestionar Mesa ' + idMesa;
     
-    // Aquí cargarías el estado actual de la mesa
-    
     const modal = new bootstrap.Modal(document.getElementById('modalGestionarMesa'));
     modal.show();
 }
@@ -253,7 +236,6 @@ function actualizarEstadoMesa() {
     const mesaId = document.getElementById('mesa_id').value;
     const estado = document.getElementById('estado_mesa').value;
     
-    // Implementar actualización
     fetch('index.php?controller=recepcion&action=actualizarEstadoMesa', {
         method: 'POST',
         headers: {

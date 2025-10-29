@@ -1,5 +1,4 @@
 <div class="container my-5">
-    <!-- Navegación de regreso -->
     <div class="mb-4">
         <a href="index.php?controller=menu" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Volver al Menú

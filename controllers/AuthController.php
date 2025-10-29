@@ -58,7 +58,7 @@ class AuthController {
             $usuario = $_POST['usuario'] ?? '';
             $password = $_POST['password'] ?? '';
             
-            // Validación - pendiente integrar con BD
+            // pendiente conexcion con la base de datos
             if ($usuario === 'recepcion' && $password === 'recepcion123') {
                 $_SESSION['recepcion_id'] = 1;
                 $_SESSION['recepcion_nombre'] = 'Recepcionista';
