@@ -53,7 +53,7 @@ class Promocion {
             $stmt = $this->conn->prepare($sql);
             
             $stmt->bindParam(1, $datos['descripcion']);
-            $stmt->bindParam(2, $datos['descuento']);
+            $stmt->bindParam(2, $datos['descuento_porcentaje']);
             $stmt->bindParam(3, $datos['fecha_inicio']);
             $stmt->bindParam(4, $datos['fecha_fin']);
             
