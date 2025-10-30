@@ -98,7 +98,8 @@ class RecepcionController {
                 exit();
             }
             $reservacion = new Reservacion();
-            $resultado = $reservacion->crear([...]);
+            $resultado = $reservacion->crear([
+            ]);
             
             $_SESSION['mensaje'] = "Reservación creada exitosamente";
             header('Location: index.php?controller=recepcion');

@@ -3,7 +3,7 @@
 .\SQLEXPRESS
 
 ###### Base de datos
-Restaurant
+RESTAURANT
 
 ###### Usuario
 webmaster
@@ -21,3 +21,9 @@ http://localhost/proyectofinal/index.php?controller=auth&action=mostrarLoginRece
 
 Usuario: recepcion
 Contraseña: recepcion123
+
+###### Página admin
+http://localhost/proyectofinal/index.php?controller=auth&action=mostrarLoginAdministrador
+
+Usuario: admin
+Contraseña: admin123

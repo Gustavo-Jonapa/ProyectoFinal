@@ -19,7 +19,45 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <?php if (isset($_SESSION['es_recepcion']) && $_SESSION['es_recepcion'] === true): ?>
+                    <?php if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true): ?>
+                    <!-- Menú para Administrador -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=administrador">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=administrador&action=empleados">
+                            <i class="bi bi-people"></i> Empleados
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=administrador&action=inventario">
+                            <i class="bi bi-box-seam"></i> Inventario
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=administrador&action=productos">
+                            <i class="bi bi-bag"></i> Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?controller=administrador&action=proveedores">
+                            <i class="bi bi-truck"></i> Proveedores
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-shield-lock"></i> <?php echo $_SESSION['admin_nombre']; ?>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="index.php?controller=auth&action=logout">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                            </a></li>
+                        </ul>
+                    </li>
+                    
+                    <?php elseif (isset($_SESSION['es_recepcion']) && $_SESSION['es_recepcion'] === true): ?>
                     <!-- Menú para Recepción -->
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?controller=recepcion">

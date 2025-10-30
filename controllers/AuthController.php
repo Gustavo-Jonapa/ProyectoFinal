@@ -43,10 +43,14 @@ class AuthController {
     
     public function logout() {
         $esRecepcion = isset($_SESSION['es_recepcion']) && $_SESSION['es_recepcion'] === true;
+        $esAdmin = isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true;
+        
         session_destroy();
         
         if ($esRecepcion) {
             header('Location: index.php?controller=auth&action=mostrarLoginRecepcion');
+        } elseif ($esAdmin) {
+            header('Location: index.php?controller=auth&action=mostrarLoginAdministrador');
         } else {
             header('Location: index.php?controller=inicio');
         }
@@ -81,6 +85,37 @@ class AuthController {
         $pageTitle = "Acceso Recepción - Tres Esencias";
         require_once "views/layouts/header.php";
         require_once "views/autentificacion/login_recepcion.php";
+        require_once "views/layouts/footer.php";
+    }
+    
+    public function loginAdministrador() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $usuario = $_POST['usuario'] ?? '';
+            $password = $_POST['password'] ?? '';
+            
+            // pendiente conexion con la base de datos
+            if ($usuario === 'admin' && $password === 'admin123') {
+                $_SESSION['admin_id'] = 1;
+                $_SESSION['admin_nombre'] = 'Administrador';
+                $_SESSION['es_admin'] = true;
+                $_SESSION['mensaje'] = "Bienvenido al panel de administración";
+                header('Location: index.php?controller=administrador');
+                exit();
+            } else {
+                $_SESSION['error'] = "Credenciales incorrectas";
+            }
+        }
+        
+        $pageTitle = "Acceso Administrador - Tres Esencias";
+        require_once "views/layouts/header.php";
+        require_once "views/autentificacion/login_administrador.php";
+        require_once "views/layouts/footer.php";
+    }
+    
+    public function mostrarLoginAdministrador() {
+        $pageTitle = "Acceso Administrador - Tres Esencias";
+        require_once "views/layouts/header.php";
+        require_once "views/autentificacion/login_administrador.php";
         require_once "views/layouts/footer.php";
     }
 }
