@@ -114,7 +114,7 @@ class MenuController {
                 'descripcion' => 'Suave cheesecake',
                 'categoria' => 'Postres',
                 'precio' => 85.00,
-                'imagen' => 'https://images.unsplash.com/photo-1533134242820-b4f3f7be6486?w=400'
+                'imagen' => 'https://www.splenda.com/wp-content/themes/bistrotheme/assets/recipe-images/strawberry-topped-cheesecake.jpg?w=400'
             ],
             [
                 'id' => 6,

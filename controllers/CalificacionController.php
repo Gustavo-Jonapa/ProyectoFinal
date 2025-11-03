@@ -12,11 +12,11 @@ class CalificacionController {
     
     public function enviar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $calificacion = $_POST['calificacion'] ?? '';
-            $tipo = $_POST['tipo'] ?? '';
-            $comentario = $_POST['comentario'] ?? '';
-            $nombre = $_POST['nombre'] ?? 'Anónimo';
-            $email = $_POST['email'] ?? '';
+            $calificacion = $_POST['CALIFICACION'] ?? '';
+            $tipo = $_POST['TIPO'] ?? '';
+            $comentario = $_POST['COMENTARIO'] ?? '';
+            $nombre = $_POST['NOMBRE'] ?? 'Anónimo';
+            $email = $_POST['EMAIL'] ?? '';
             
             if (empty($calificacion) || empty($tipo) || empty($comentario)) {
                 $_SESSION['error'] = "Por favor completa todos los campos obligatorios";

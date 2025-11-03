@@ -117,13 +117,8 @@
 
                 <div class="row g-2">
                     <div class="col-md-6">
-                        <button type="submit" name="envio" value="email" class="btn btn-lg w-100 fw-bold text-white" style="background-color: #F28322; border: none;">
-                            <i class="bi bi-envelope"></i> Enviar al correo
-                        </button>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="submit" name="envio" value="whatsapp" class="btn btn-lg w-100 fw-bold text-white" style="background-color: #25D366; border: none;">
-                            <i class="bi bi-whatsapp"></i> Enviar por WhatsApp
+                        <button type="submit" name="envio" class="btn btn-lg w-100 fw-bold text-white" style="background-color: #F28322; border: none;">
+                            <i class="bi bi-pass"></i> Reservar
                         </button>
                     </div>
                 </div>

@@ -15,11 +15,11 @@ class Calificacion {
             $sql = "{CALL SP_INSERT_CALIFICACION(?, ?, ?, ?, ?)}";
             $stmt = $this->conn->prepare($sql);
             
-            $stmt->bindParam(1, $datos['calificacion']);
-            $stmt->bindParam(2, $datos['tipo']);
-            $stmt->bindParam(3, $datos['comentario']);
-            $stmt->bindParam(4, $datos['nombre']);
-            $stmt->bindParam(5, $datos['email']);
+            $stmt->bindParam(1, $datos['CALIFICACION']);
+            $stmt->bindParam(2, $datos['TIPO']);
+            $stmt->bindParam(3, $datos['COMENTARIO']);
+            $stmt->bindParam(4, $datos['NOMBRE']);
+            $stmt->bindParam(5, $datos['EMAIL']);
             
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);

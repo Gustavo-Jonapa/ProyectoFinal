@@ -21,7 +21,7 @@
                 <div class="card h-100 shadow-sm border-0 text-center" style="transition: transform 0.3s;">
                     <div class="card-body p-4">
                         <div class="icon-circle mb-3" style="width: 100px; height: 100px; background-color: #F28322; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-                            <i class="bi bi-cake2 fs-1 text-white"></i>
+                            <i class="bi bi- fs-1 text-white"></i>
                         </div>
                         <h3 class="fw-bold" style="color: #8C451C;">Postres</h3>
                         <p class="text-muted">Endulza tu experiencia</p>
