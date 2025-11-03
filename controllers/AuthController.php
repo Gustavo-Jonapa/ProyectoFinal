@@ -9,7 +9,7 @@ class AuthController {
             $password = $_POST['password'] ?? '';
             
             // Validación- pendiente
-            if ($email === 'gustavo.jonapa24@unach.mx' && $password === 'iewlrgs7V_') {
+            if ($email === '' && $password === '') {
                 $_SESSION['usuario_id'] = 1;
                 $_SESSION['usuario_nombre'] = 'Nombre';
                 $_SESSION['es_recepcion'] = false; // Usuario normal, no recepción
@@ -63,7 +63,7 @@ class AuthController {
             $password = $_POST['password'] ?? '';
             
             // pendiente conexcion con la base de datos
-            if ($usuario === 'recepcion' && $password === 'recepcion123') {
+            if ($usuario === '' && $password === '') {
                 $_SESSION['recepcion_id'] = 1;
                 $_SESSION['recepcion_nombre'] = 'Recepcionista';
                 $_SESSION['es_recepcion'] = true;
@@ -94,7 +94,7 @@ class AuthController {
             $password = $_POST['password'] ?? '';
             
             // pendiente conexion con la base de datos
-            if ($usuario === 'admin' && $password === 'admin123') {
+            if ($usuario === '' && $password === '') {
                 $_SESSION['admin_id'] = 1;
                 $_SESSION['admin_nombre'] = 'Administrador';
                 $_SESSION['es_admin'] = true;
