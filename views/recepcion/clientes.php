@@ -11,7 +11,6 @@
         </div>
     </div>
 
-    <!-- Búsqueda -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
             <div class="row g-3">

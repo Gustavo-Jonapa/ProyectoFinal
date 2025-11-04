@@ -75,5 +75,41 @@ class Usuario {
             return false;
         }
     }
+
+    public function autenticarRecepcion($usuario, $password) {
+        try {
+            // Buscar en LOGIN_USUARIOS con tipo RECEPCION
+            $sql = "{CALL SP_AUTENTICAR_RECEPCION(?, ?)}";
+            $stmt = $this->conn->prepare($sql);
+            
+            $stmt->bindParam(1, $usuario);
+            $stmt->bindParam(2, $password);
+            
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch(PDOException $e) {
+            return ['Status' => 'ERROR', 'Mensaje' => $e->getMessage()];
+        }
+    }
+
+    public function autenticarAdministrador($usuario, $password) {
+        try {
+            // Buscar en LOGIN_USUARIOS con tipo ADMIN
+            $sql = "{CALL SP_AUTENTICAR_ADMIN(?, ?)}";
+            $stmt = $this->conn->prepare($sql);
+            
+            $stmt->bindParam(1, $usuario);
+            $stmt->bindParam(2, $password);
+            
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result;
+        } catch(PDOException $e) {
+            return ['Status' => 'ERROR', 'Mensaje' => $e->getMessage()];
+        }
+    }
 }
 ?>

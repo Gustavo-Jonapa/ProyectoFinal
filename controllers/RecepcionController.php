@@ -91,7 +91,6 @@ class RecepcionController {
             $mesa_id = $_POST['mesa_id'] ?? '';
             $notas = $_POST['notas'] ?? '';
             
-            // Validación
             if (empty($cliente_id) || empty($fecha) || empty($hora) || empty($personas) || empty($mesa_id)) {
                 $_SESSION['error'] = "Todos los campos son obligatorios";
                 header('Location: index.php?controller=recepcion');

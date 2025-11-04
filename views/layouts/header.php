@@ -20,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <?php if (isset($_SESSION['es_admin']) && $_SESSION['es_admin'] === true): ?>
-                    <!-- Menú para Administrador -->
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?controller=administrador">
                             <i class="bi bi-speedometer2"></i> Dashboard
@@ -58,7 +58,7 @@
                     </li>
                     
                     <?php elseif (isset($_SESSION['es_recepcion']) && $_SESSION['es_recepcion'] === true): ?>
-                    <!-- Menú para Recepción -->
+                   
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?controller=recepcion">
                             <i class="bi bi-speedometer2"></i> Panel
@@ -85,7 +85,7 @@
                         </ul>
                     </li>
                     <?php else: ?>
-                    <!-- Menú para Clientes -->
+                
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?controller=inicio">Inicio</a>
                     </li>
@@ -125,7 +125,6 @@
         </div>
     </nav>
 
-    <!-- Mensajes inicio de sesión -->
     <?php if (isset($_SESSION['mensaje'])): ?>
     <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
         <?php 

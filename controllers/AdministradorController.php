@@ -23,8 +23,7 @@ class AdministradorController {
         require_once "views/administrador/index.php";
         require_once "views/layouts/footer.php";
     }
-    
-    // ==================== EMPLEADOS ====================
+
     public function empleados() {
         $this->verificarAccesoAdmin();
         
@@ -113,7 +112,6 @@ class AdministradorController {
         }
     }
     
-    // ==================== INVENTARIO ====================
     public function inventario() {
         $this->verificarAccesoAdmin();
         
@@ -173,7 +171,6 @@ class AdministradorController {
         }
     }
     
-    // ==================== PRODUCTOS ====================
     public function productos() {
         $this->verificarAccesoAdmin();
         
@@ -216,7 +213,6 @@ class AdministradorController {
         }
     }
     
-    // ==================== PROVEEDORES ====================
     public function proveedores() {
         $this->verificarAccesoAdmin();
         

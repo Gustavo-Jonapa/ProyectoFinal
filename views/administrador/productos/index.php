@@ -317,3 +317,545 @@ function eliminarProducto(id) {
     }
 }
 </script>
+<script>
+
+function filtrarProductos() {
+    const nombre = document.getElementById('filtroNombre').value.toLowerCase();
+    const estado = document.getElementById('filtroEstado').value;
+    const filas = document.querySelectorAll('#tablaProductos tbody tr');
+    
+    filas.forEach(fila => {
+        // Evitar la fila de "no hay productos"
+        if (fila.querySelector('td[colspan]')) {
+            return;
+        }
+        
+        const textoFila = fila.textContent.toLowerCase();
+        const estadoBadge = fila.querySelectorAll('.badge')[1]?.textContent || '';
+        
+        const coincideNombre = nombre === '' || textoFila.includes(nombre);
+        const coincideEstado = estado === '' || estadoBadge.includes(estado);
+        
+        if (coincideNombre && coincideEstado) {
+            fila.style.display = '';
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+}
+
+function limpiarFiltros() {
+    document.getElementById('filtroNombre').value = '';
+    document.getElementById('filtroEstado').value = '';
+    filtrarProductos();
+}
+
+function verProducto(id) {
+    fetch('index.php?controller=administrador&action=obtenerDetalleProducto&id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const prod = data.producto;
+                const margen = prod.ANALISIS_MARGEN;
+                
+                // Construir el HTML con los detalles
+                const detalleHTML = `
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <strong>Producto #${prod.ID_PRODUCTO}</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <h5 class="fw-bold">${prod.NOMBRE}</h5>
+                            <p class="text-muted">${prod.DESCRIPCION || 'Sin descripción'}</p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Precio de Compra</h6>
+                                    <h4 class="text-primary mb-0">
+                                        $${parseFloat(prod.PRECIO_COMPRA).toLocaleString('es-MX', {minimumFractionDigits: 2})}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Precio de Venta</h6>
+                                    <h4 class="text-success mb-0">
+                                        $${parseFloat(prod.PRECIO_VENTA).toLocaleString('es-MX', {minimumFractionDigits: 2})}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-warning text-dark">
+                                <div class="card-body">
+                                    <h6 class="mb-2">Margen Unitario</h6>
+                                    <h4 class="mb-0">
+                                        $${margen.margen_unitario.toFixed(2)}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h6 class="mb-2">% Margen</h6>
+                                    <h4 class="mb-0">
+                                        ${margen.porcentaje_margen.toFixed(1)}%
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h6 class="mb-2">Utilidad en Stock</h6>
+                                    <h4 class="mb-0">
+                                        $${margen.utilidad_por_stock.toFixed(2)}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Stock Actual:</strong>
+                            <p class="mb-0 ${prod.STOCK_ACTUAL <= prod.STOCK_MINIMO ? 'text-danger' : 'text-success'} fw-bold">
+                                ${prod.STOCK_ACTUAL} unidades
+                                ${prod.STOCK_ACTUAL <= prod.STOCK_MINIMO ? '<i class="bi bi-exclamation-triangle"></i>' : ''}
+                            </p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Stock Mínimo:</strong>
+                            <p class="mb-0">${prod.STOCK_MINIMO} unidades</p>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="alert alert-light">
+                                <strong>Valor del Stock:</strong><br>
+                                Costo: $${(prod.STOCK_ACTUAL * prod.PRECIO_COMPRA).toLocaleString('es-MX', {minimumFractionDigits: 2})}<br>
+                                Venta: $${(prod.STOCK_ACTUAL * prod.PRECIO_VENTA).toLocaleString('es-MX', {minimumFractionDigits: 2})}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                mostrarModalDetalle('Detalles del Producto', detalleHTML);
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al obtener detalles del producto');
+        });
+}
+
+function editarProducto(id) {
+    fetch('index.php?controller=administrador&action=obtenerProductoParaEditar&id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const prod = data.producto;
+                
+                // Crear modal de edición si no existe
+                if (!document.getElementById('modalEditarProducto')) {
+                    crearModalEditar();
+                }
+                
+                // Llenar el formulario
+                document.getElementById('edit_id').value = prod.ID_PRODUCTO;
+                document.getElementById('edit_nombre').value = prod.NOMBRE;
+                document.getElementById('edit_descripcion').value = prod.DESCRIPCION || '';
+                document.getElementById('edit_precio_compra').value = prod.PRECIO_COMPRA;
+                document.getElementById('edit_precio_venta').value = prod.PRECIO_VENTA;
+                document.getElementById('edit_stock_actual').value = prod.STOCK_ACTUAL;
+                document.getElementById('edit_stock_minimo').value = prod.STOCK_MINIMO;
+                document.getElementById('edit_id_proveedor').value = prod.ID_PROVEEDOR || '';
+                
+                // Mostrar margen actual
+                calcularMargenEditar();
+                
+                // Mostrar modal
+                const modal = new bootstrap.Modal(document.getElementById('modalEditarProducto'));
+                modal.show();
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar datos del producto');
+        });
+}
+
+function crearModalEditar() {
+    const modalHTML = `
+        <div class="modal fade" id="modalEditarProducto" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #8C451C; color: white;">
+                        <h5 class="modal-title"><i class="bi bi-pencil"></i> Editar Producto</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEditarProducto" method="POST" action="index.php?controller=administrador&action=editarProducto">
+                            <input type="hidden" name="id" id="edit_id">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Nombre del Producto *</label>
+                                    <input type="text" name="nombre" id="edit_nombre" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Proveedor</label>
+                                    <select name="id_proveedor" id="edit_id_proveedor" class="form-select">
+                                        <option value="">Sin proveedor</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Descripción</label>
+                                    <textarea name="descripcion" id="edit_descripcion" class="form-control" rows="2"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Precio de Compra *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" name="precio_compra" id="edit_precio_compra" 
+                                               class="form-control" required step="0.01" min="0" 
+                                               onchange="calcularMargenEditar()">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Precio de Venta *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" name="precio_venta" id="edit_precio_venta" 
+                                               class="form-control" required step="0.01" min="0"
+                                               onchange="calcularMargenEditar()">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div id="margenEditar" class="alert alert-info" style="display:none;">
+                                        <strong>Margen:</strong> <span id="margenTextoEditar"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Stock Actual *</label>
+                                    <input type="number" name="stock_actual" id="edit_stock_actual" 
+                                           class="form-control" required step="1" min="0">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Stock Mínimo *</label>
+                                    <input type="number" name="stock_minimo" id="edit_stock_minimo" 
+                                           class="form-control" required step="1" min="0">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" form="formEditarProducto" class="btn text-white" 
+                                style="background-color: #8C451C;">
+                            <i class="bi bi-save"></i> Actualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+function calcularMargenEditar() {
+    const precioCompra = parseFloat(document.getElementById('edit_precio_compra').value) || 0;
+    const precioVenta = parseFloat(document.getElementById('edit_precio_venta').value) || 0;
+    
+    if (precioCompra > 0) {
+        const margen = precioVenta - precioCompra;
+        const porcentaje = (margen / precioCompra) * 100;
+        
+        const divMargen = document.getElementById('margenEditar');
+        const textoMargen = document.getElementById('margenTextoEditar');
+        
+        let colorClass = 'alert-info';
+        if (porcentaje < 15) colorClass = 'alert-danger';
+        else if (porcentaje < 30) colorClass = 'alert-warning';
+        else colorClass = 'alert-success';
+        
+        divMargen.className = `alert ${colorClass}`;
+        divMargen.style.display = 'block';
+        textoMargen.textContent = `$${margen.toFixed(2)} (${porcentaje.toFixed(1)}%)`;
+    }
+}
+
+function eliminarProducto(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar este producto?\n\nEsta acción no se puede deshacer.')) {
+        const formData = new FormData();
+        formData.append('id', id);
+        
+        fetch('index.php?controller=administrador&action=eliminarProducto', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                mostrarMensaje('Producto eliminado exitosamente', 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                alert('Error: ' + (data.Mensaje || 'No se pudo eliminar el producto'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error de conexión. Por favor intente nuevamente.');
+        });
+    }
+}
+
+function calcularMargenNuevo() {
+    const precioCompra = parseFloat(document.querySelector('#formNuevoProducto input[name="precio_compra"]').value) || 0;
+    const precioVenta = parseFloat(document.querySelector('#formNuevoProducto input[name="precio_venta"]').value) || 0;
+    
+    // Crear div de margen si no existe
+    let divMargen = document.getElementById('margenNuevo');
+    if (!divMargen) {
+        divMargen = document.createElement('div');
+        divMargen.id = 'margenNuevo';
+        divMargen.className = 'alert alert-info col-12';
+        
+        const container = document.querySelector('#formNuevoProducto .row');
+        container.appendChild(divMargen);
+    }
+    
+    if (precioCompra > 0 && precioVenta > 0) {
+        const margen = precioVenta - precioCompra;
+        const porcentaje = (margen / precioCompra) * 100;
+        
+        let colorClass = 'alert-info';
+        let mensaje = '';
+        
+        if (margen < 0) {
+            colorClass = 'alert-danger';
+            mensaje = '⚠️ ¡Pérdida! ';
+        } else if (porcentaje < 15) {
+            colorClass = 'alert-danger';
+            mensaje = '⚠️ Margen bajo - ';
+        } else if (porcentaje < 30) {
+            colorClass = 'alert-warning';
+            mensaje = '⚡ Margen medio - ';
+        } else {
+            colorClass = 'alert-success';
+            mensaje = '✅ Buen margen - ';
+        }
+        
+        divMargen.className = `alert ${colorClass} col-12`;
+        divMargen.innerHTML = `<strong>${mensaje}Margen:</strong> $${margen.toFixed(2)} (${porcentaje.toFixed(1)}%)`;
+        divMargen.style.display = 'block';
+    } else {
+        divMargen.style.display = 'none';
+    }
+}
+
+function mostrarModalDetalle(titulo, contenidoHTML) {
+    const modalAnterior = document.getElementById('modalDetalleProducto');
+    if (modalAnterior) {
+        modalAnterior.remove();
+    }
+    
+    const modalHTML = `
+        <div class="modal fade" id="modalDetalleProducto" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-info-circle"></i> ${titulo}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${contenidoHTML}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    const modal = new bootstrap.Modal(document.getElementById('modalDetalleProducto'));
+    modal.show();
+    
+    document.getElementById('modalDetalleProducto').addEventListener('hidden.bs.modal', function () {
+        this.remove();
+    });
+}
+
+function mostrarMensaje(mensaje, tipo = 'info') {
+    const iconos = {
+        'success': 'check-circle',
+        'danger': 'x-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle'
+    };
+    
+    const alerta = document.createElement('div');
+    alerta.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
+    alerta.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alerta.innerHTML = `
+        <i class="bi bi-${iconos[tipo] || 'info-circle'}"></i>
+        ${mensaje}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alerta);
+    
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+
+function cargarProveedoresEnSelect() {
+    fetch('index.php?controller=administrador&action=obtenerProveedoresSelect')
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                // Para modal nuevo
+                const selectNuevo = document.querySelector('#modalNuevoProducto select[name="id_proveedor"]');
+                if (selectNuevo) {
+                    llenarSelectProveedores(selectNuevo, data.proveedores);
+                }
+                
+                // Para modal editar
+                const selectEditar = document.getElementById('edit_id_proveedor');
+                if (selectEditar) {
+                    llenarSelectProveedores(selectEditar, data.proveedores);
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function llenarSelectProveedores(selectElement, proveedores) {
+    // Mantener la opción "Sin proveedor"
+    const valorActual = selectElement.value;
+    
+    // Limpiar opciones excepto la primera
+    while (selectElement.options.length > 1) {
+        selectElement.remove(1);
+    }
+    
+    // Agregar proveedores
+    proveedores.forEach(proveedor => {
+        const option = document.createElement('option');
+        option.value = proveedor.ID_PROVEEDOR;
+        option.textContent = proveedor.NOMBRE;
+        selectElement.appendChild(option);
+    });
+    
+    // Restaurar valor si existía
+    if (valorActual) {
+        selectElement.value = valorActual;
+    }
+}
+
+let timeoutBusqueda;
+document.getElementById('filtroNombre')?.addEventListener('input', function() {
+    clearTimeout(timeoutBusqueda);
+    timeoutBusqueda = setTimeout(() => {
+        filtrarProductos();
+    }, 300);
+});
+
+document.getElementById('filtroEstado')?.addEventListener('change', function() {
+    filtrarProductos();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Calcular margen en nuevo producto
+    const inputsNuevo = document.querySelectorAll('#formNuevoProducto input[name="precio_compra"], #formNuevoProducto input[name="precio_venta"]');
+    inputsNuevo.forEach(input => {
+        input.addEventListener('input', calcularMargenNuevo);
+    });
+    
+    // Cargar proveedores cuando se abre el modal
+    document.getElementById('modalNuevoProducto')?.addEventListener('show.bs.modal', function() {
+        cargarProveedoresEnSelect();
+    });
+});
+
+function exportarCSV() {
+    window.location.href = 'index.php?controller=administrador&action=exportarProductosCSV';
+}
+document.getElementById('modalNuevoProducto')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formNuevoProducto').reset();
+    const divMargen = document.getElementById('margenNuevo');
+    if (divMargen) {
+        divMargen.style.display = 'none';
+    }
+});
+
+document.getElementById('modalEditarProducto')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formEditarProducto')?.reset();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if (isset($_SESSION['mensaje'])): ?>
+        mostrarMensaje('<?php echo $_SESSION['mensaje']; ?>', 'success');
+        <?php unset($_SESSION['mensaje']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['error'])): ?>
+        mostrarMensaje('<?php echo $_SESSION['error']; ?>', 'danger');
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+});
+</script>
+
+<style>
+/* Estilos adicionales */
+.table tbody tr:hover {
+    background-color: rgba(140, 69, 28, 0.05);
+}
+
+.table tbody tr.table-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert.position-fixed {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #F28322;
+    box-shadow: 0 0 0 0.25rem rgba(242, 131, 34, 0.25);
+}
+</style>

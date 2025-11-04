@@ -123,5 +123,37 @@ class Inventario {
             return ['Status' => 'ERROR', 'Mensaje' => $e->getMessage()];
         }
     }
+    
+    /**
+     * MÉTODO AGREGADO: Obtener estadísticas del inventario
+     * Calcula estadísticas basadas en los datos actuales
+     */
+    public function obtenerEstadisticas() {
+        try {
+            $sql = "SELECT 
+                        COUNT(*) as total_items,
+                        SUM(CANTIDAD * PRECIO_UNITARIO) as valor_total,
+                        COUNT(CASE WHEN CANTIDAD <= CANTIDAD_MINIMA THEN 1 END) as items_bajo_stock
+                    FROM {$this->table}";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Asegurar que siempre retorne valores numéricos
+            return [
+                'total_items' => $result['total_items'] ?? 0,
+                'valor_total' => $result['valor_total'] ?? 0,
+                'items_bajo_stock' => $result['items_bajo_stock'] ?? 0
+            ];
+        } catch(PDOException $e) {
+            return [
+                'total_items' => 0,
+                'valor_total' => 0,
+                'items_bajo_stock' => 0
+            ];
+        }
+    }
 }
 ?>

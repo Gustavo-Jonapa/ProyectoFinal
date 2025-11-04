@@ -21,14 +21,14 @@
             <?php foreach ($platillos as $platillo): ?>
             <div class="col-md-4">
                 <div class="card h-100 shadow-sm border-0">
-                    <img src="<?php echo $platillo['imagen']; ?>" class="card-img-top" alt="<?php echo $platillo['nombre']; ?>" style="height: 250px; object-fit: cover;">
+                    <img src="<?php echo $platillo['']; ?>" class="card-img-top" alt="<?php echo $platillo['nombre']; ?>" style="height: 250px; object-fit: cover;">
                     <div class="card-body">
-                        <h5 class="card-title fw-bold"><?php echo $platillo['nombre']; ?></h5>
-                        <?php if (!empty($platillo['descripcion'])): ?>
-                        <p class="card-text text-muted small"><?php echo $platillo['descripcion']; ?></p>
+                        <h5 class="card-title fw-bold"><?php echo $platillo['NOMBRE']; ?></h5>
+                        <?php if (!empty($platillo['DESCRIPCION'])): ?>
+                        <p class="card-text text-muted small"><?php echo $platillo['DESCRIPCION']; ?></p>
                         <?php endif; ?>
                         <div class="d-flex justify-content-between align-items-center">
-                            <p class="fs-3 fw-bold mb-0" style="color: #F28322;">$<?php echo number_format($platillo['precio'], 2); ?></p>
+                            <p class="fs-3 fw-bold mb-0" style="color: #F28322;">$<?php echo number_format($platillo['PRECIO'], 2); ?></p>
                             </button>
                         </div>
                     </div>

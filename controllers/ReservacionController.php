@@ -1,25 +1,13 @@
 <?php
 require_once 'models/Reservacion.php';
+require_once 'models/Cliente.php';
 
 class ReservacionController {
     public function index() {
         $pageTitle = "Reservaciones - Tres Esencias";
         
-        // ejemplos
-        $mesas = [
-            ['id' => 1, 'numero' => 1, 'capacidad' => 2, 'disponible' => true],
-            ['id' => 2, 'numero' => 2, 'capacidad' => 4, 'disponible' => false],
-            ['id' => 3, 'numero' => 3, 'capacidad' => 4, 'disponible' => true],
-            ['id' => 4, 'numero' => 4, 'capacidad' => 6, 'disponible' => true],
-            ['id' => 5, 'numero' => 5, 'capacidad' => 8, 'disponible' => true],
-            ['id' => 6, 'numero' => 6, 'capacidad' => 2, 'disponible' => false],
-            ['id' => 7, 'numero' => 7, 'capacidad' => 2, 'disponible' => false],
-            ['id' => 8, 'numero' => 8, 'capacidad' => 4, 'disponible' => true],
-            ['id' => 9, 'numero' => 9, 'capacidad' => 4, 'disponible' => false],
-            ['id' => 10, 'numero' => 10, 'capacidad' => 6, 'disponible' => true],
-            ['id' => 11, 'numero' => 11, 'capacidad' => 8, 'disponible' => false],
-            ['id' => 12, 'numero' => 12, 'capacidad' => 2, 'disponible' => false]
-        ];
+        $reservacionModel = new Reservacion();
+        $mesas = $reservacionModel->obtenerMesas();
         
         require_once "views/layouts/header.php";
         require_once "views/reservaciones/index.php";
@@ -38,22 +26,27 @@ class ReservacionController {
             $hora = $_POST['hora'] ?? '';
             $personas = $_POST['personas'] ?? '';
             $mesa_id = $_POST['mesa_id'] ?? '';
-            $envio = $_POST['envio'] ?? 'email';
             
             if (empty($fecha) || empty($hora) || empty($personas) || empty($mesa_id)) {
                 $_SESSION['error'] = "Todos los campos son obligatorios";
                 header('Location: index.php?controller=reservacion');
                 exit();
             }
-            $reservacion = new Reservacion();
-            $resultado = $reservacion->crear([
-
+            
+            $reservacionModel = new Reservacion();
+            $resultado = $reservacionModel->crear([
+                'id_cliente' => $_SESSION['usuario_id'],
+                'id_mesa' => $mesa_id,
+                'fecha' => $fecha,
+                'hora' => $hora,
+                'personas' => $personas,
+                'estado' => 'PENDIENTE'
             ]);
             
-            if ($envio === 'whatsapp') {
-                $_SESSION['mensaje'] = "Reservación creada exitosamente. Se enviará confirmación por WhatsApp.";
-            } else {
+            if ($resultado && $resultado['Status'] === 'OK') {
                 $_SESSION['mensaje'] = "Reservación creada exitosamente. Se enviará confirmación por email.";
+            } else {
+                $_SESSION['error'] = $resultado['Mensaje'] ?? "Error al crear la reservación";
             }
             
             header('Location: index.php?controller=reservacion');
@@ -78,12 +71,19 @@ class ReservacionController {
                 exit();
             }
             
-            $reservacion = new Reservacion();
-            $resultado = $reservacion->actualizar($reservacion_id, [
-
+            $reservacionModel = new Reservacion();
+            $resultado = $reservacionModel->actualizar($reservacion_id, [
+                'fecha' => $fecha,
+                'hora' => $hora,
+                'personas' => $personas,
+                'id_mesa' => $_POST['mesa_id'] ?? null
             ]);
             
-            echo json_encode(['success' => true, 'message' => 'Reservación actualizada']);
+            if ($resultado && $resultado['Status'] === 'OK') {
+                echo json_encode(['success' => true, 'message' => 'Reservación actualizada']);
+            } else {
+                echo json_encode(['success' => false, 'message' => $resultado['Mensaje'] ?? 'Error']);
+            }
             exit();
         }
     }
@@ -102,10 +102,14 @@ class ReservacionController {
                 exit();
             }
             
-            $reservacion = new Reservacion();
-            $resultado = $reservacion->cancelar($reservacion_id);
+            $reservacionModel = new Reservacion();
+            $resultado = $reservacionModel->cancelar($reservacion_id);
             
-            echo json_encode(['success' => true, 'message' => 'Reservación cancelada']);
+            if ($resultado && $resultado['Status'] === 'OK') {
+                echo json_encode(['success' => true, 'message' => 'Reservación cancelada']);
+            } else {
+                echo json_encode(['success' => false, 'message' => $resultado['Mensaje'] ?? 'Error']);
+            }
             exit();
         }
     }

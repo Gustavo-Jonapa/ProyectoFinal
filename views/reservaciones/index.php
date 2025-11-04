@@ -77,7 +77,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Hora</label>
                         <input type="time" name="hora" id="hora" class="form-control form-control-lg" required
-                               min="13:00" max="22:00">
+                               min="13:00" max="23:00">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Personas</label>

@@ -7,27 +7,23 @@
                     
                     <form action="index.php?controller=auth&action=login" method="POST">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Correo Electrónico</label>
-                            <input type="email" name="email" class="form-control form-control-lg" 
-                                   placeholder="tu@email.com" required>
+                            <label class="form-label fw-bold">Usuario</label>
+                            <input type="text" name="usuario" class="form-control form-control-lg" 
+                                placeholder="tu_usuario" required>
                         </div>
                         
                         <div class="mb-3">
                             <label class="form-label fw-bold">Contraseña</label>
                             <input type="password" name="password" class="form-control form-control-lg" 
-                                   placeholder="••••••••" required>
+                                placeholder="••••••••" required>
                         </div>
                         
                         <button type="submit" class="btn btn-lg w-100 fw-bold text-white mb-3" style="background-color: #F28322;">
                             <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
                         </button>
-                        <!--
-                        <p class="text-center text-muted mb-3">
-                            <a href="#" class="text-decoration-none" style="color: #F28322;">¿Olvidaste tu contraseña?</a>
-                        </p>
                         
                         <hr>
--->
+                        
                         <p class="text-center mb-0">
                             ¿No tienes cuenta? 
                             <a href="index.php?controller=auth&action=register" class="text-decoration-none fw-bold" style="color: #F28322;">

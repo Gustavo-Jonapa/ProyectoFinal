@@ -15,7 +15,6 @@ body {
     width: 100%;
 }
 
-/* Navbar */
 .navbar-brand {
     letter-spacing: 1px;
 }
@@ -32,7 +31,6 @@ body {
     /*transform: translateY(-2px);*/
 }
 
-/* Carrusel */
 .carousel-img {
     height: 500px;
     object-fit: cover;
@@ -50,7 +48,6 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* Cards */
 /*
 .card-custom {
     transition: all 0.3s ease;
@@ -75,7 +72,6 @@ body {
     transform: scale(1.1) rotate(5deg);
 }
 
-/* Botones *
 .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(242, 131, 34, 0.4);
@@ -92,7 +88,6 @@ body {
     border-radius: 10px;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .carousel-img {
         height: 300px;
@@ -123,7 +118,7 @@ body {
     animation: fadeIn 0.5s ease-out;
 }
 
-/* Alerta personalizada *
+
 .alert {
     border-radius: 10px;
     border: none;

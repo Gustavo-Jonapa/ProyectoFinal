@@ -57,12 +57,12 @@
         ?>
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0">
-                <img src="<?php echo $platillo['imagen']; ?>" class="card-img-top" alt="<?php echo $platillo['nombre']; ?>" style="height: 250px; object-fit: cover;">
+                <img src="<?php echo $platillo['']; ?>" class="card-img-top" alt="<?php echo $platillo['nombre']; ?>" style="height: 250px; object-fit: cover;">
                 <div class="card-body">
-                    <span class="badge mb-2" style="background-color: #F28322;"><?php echo $platillo['categoria']; ?></span>
-                    <h5 class="card-title fw-bold"><?php echo $platillo['nombre']; ?></h5>
-                    <p class="card-text text-muted small"><?php echo $platillo['descripcion']; ?></p>
-                    <p class="fs-3 fw-bold mb-0" style="color: #F28322;">$<?php echo number_format($platillo['precio'], 2); ?></p>
+                    <span class="badge mb-2" style="background-color: #F28322;"><?php echo $platillo['TIPO']; ?></span>
+                    <h5 class="card-title fw-bold"><?php echo $platillo['NOMBRE']; ?></h5>
+                    <p class="card-text text-muted small"><?php echo $platillo['DESCRIPCION']; ?></p>
+                    <p class="fs-3 fw-bold mb-0" style="color: #F28322;">$<?php echo number_format($platillo['PRECIO'], 2); ?></p>
                 </div>
             </div>
         </div>
@@ -71,8 +71,5 @@
 </div>
 
 <style>
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2) !important;
-    }
+    
 </style>

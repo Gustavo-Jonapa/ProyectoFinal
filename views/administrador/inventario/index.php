@@ -382,4 +382,204 @@ function guardarMovimiento() {
 function verDetalle(id) {
     alert('Ver detalles del item ID: ' + id);
 }
+<script src="path/to/inventario_scripts_adicionales.js"></script>
+<script>
+// Cargar proveedores cuando se abre el modal
+document.addEventListener('DOMContentLoaded', function() {
+    const modalNuevoItem = document.getElementById('modalNuevoItem');
+    
+    if (modalNuevoItem) {
+        modalNuevoItem.addEventListener('show.bs.modal', function () {
+            cargarProveedores();
+        });
+    }
+});
+
+function cargarProveedores() {
+    fetch('index.php?controller=administrador&action=obtenerProveedoresSelect')
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const select = document.querySelector('select[name="id_proveedor"]');
+                
+                // Limpiar opciones anteriores (excepto la primera)
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Agregar proveedores
+                data.proveedores.forEach(proveedor => {
+                    const option = document.createElement('option');
+                    option.value = proveedor.ID_PROVEEDOR;
+                    option.textContent = proveedor.NOMBRE;
+                    select.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar proveedores:', error);
+        });
+}
+
+// Función mejorada para guardar movimiento
+function guardarMovimiento() {
+    const form = document.getElementById('formActualizarStock');
+    const formData = new FormData(form);
+    
+    // Validar que haya cantidad
+    const cantidad = parseFloat(document.getElementById('stock_cantidad').value);
+    if (!cantidad || cantidad <= 0) {
+        alert('Por favor ingrese una cantidad válida mayor a 0');
+        return;
+    }
+    
+    // Mostrar indicador de carga
+    const btnGuardar = event.target;
+    const textoOriginal = btnGuardar.innerHTML;
+    btnGuardar.disabled = true;
+    btnGuardar.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Guardando...';
+    
+    fetch('index.php?controller=administrador&action=actualizarInventario', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.Status === 'OK') {
+            // Cerrar modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalActualizarStock'));
+            modal.hide();
+            
+            // Mostrar mensaje de éxito
+            mostrarMensaje('Stock actualizado exitosamente', 'success');
+            
+            // Recargar página después de un momento
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            alert('Error: ' + (data.Mensaje || 'No se pudo actualizar el stock'));
+            btnGuardar.disabled = false;
+            btnGuardar.innerHTML = textoOriginal;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error de conexión. Por favor intente nuevamente.');
+        btnGuardar.disabled = false;
+        btnGuardar.innerHTML = textoOriginal;
+    });
+}
+
+// Función para mostrar mensajes (Toast)
+function mostrarMensaje(mensaje, tipo = 'info') {
+    // Crear elemento de alerta
+    const alerta = document.createElement('div');
+    alerta.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
+    alerta.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alerta.innerHTML = `
+        ${mensaje}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alerta);
+    
+    // Auto-remover después de 3 segundos
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+
+// Función mejorada para ver detalle
+function verDetalle(id) {
+    fetch('index.php?controller=administrador&action=obtenerDetalleItem&id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const item = data.item;
+                
+                // Crear modal dinámicamente
+                const modalHTML = `
+                    <div class="modal fade" id="modalDetalleItem" tabindex="-1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-info text-white">
+                                    <h5 class="modal-title">
+                                        <i class="bi bi-info-circle"></i> Detalles del Item
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <strong>ID:</strong> ${item.ID_INVENTARIO}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <strong>Nombre:</strong> ${item.NOMBRE}
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <strong>Descripción:</strong> ${item.DESCRIPCION || 'Sin descripción'}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <strong>Cantidad:</strong>
+                                            <span class="${item.ES_BAJO_STOCK ? 'text-danger' : 'text-success'}">
+                                                ${item.CANTIDAD} ${item.UNIDAD_MEDIDA}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <strong>Stock Mínimo:</strong> ${item.CANTIDAD_MINIMA} ${item.UNIDAD_MEDIDA}
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <strong>Estado:</strong>
+                                            <span class="badge ${item.ES_BAJO_STOCK ? 'bg-danger' : 'bg-success'}">
+                                                ${item.ES_BAJO_STOCK ? 'BAJO' : 'ÓPTIMO'}
+                                            </span>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <strong>Precio Unitario:</strong> $${parseFloat(item.PRECIO_UNITARIO).toFixed(2)}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <strong>Valor Total:</strong>
+                                            <span class="text-primary fw-bold">$${item.VALOR_TOTAL.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Remover modal anterior si existe
+                const modalAnterior = document.getElementById('modalDetalleItem');
+                if (modalAnterior) {
+                    modalAnterior.remove();
+                }
+                
+                // Agregar nuevo modal
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                
+                // Mostrar modal
+                const modal = new bootstrap.Modal(document.getElementById('modalDetalleItem'));
+                modal.show();
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al obtener detalles del item');
+        });
+}
+
+// Función para limpiar el formulario cuando se cierra el modal
+document.getElementById('modalActualizarStock')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formActualizarStock').reset();
+});
+
+document.getElementById('modalNuevoItem')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formNuevoItem').reset();
+});
 </script>

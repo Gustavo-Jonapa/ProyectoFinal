@@ -354,3 +354,451 @@ function eliminarEmpleado(id) {
     }
 }
 </script>
+<script>
+function filtrarEmpleados() {
+    const nombre = document.getElementById('filtroNombre').value.toLowerCase();
+    const puesto = document.getElementById('filtroPuesto').value;
+    const filas = document.querySelectorAll('#tablaEmpleados tbody tr');
+    
+    filas.forEach(fila => {
+        // Evitar la fila de "no hay empleados"
+        if (fila.querySelector('td[colspan]')) {
+            return;
+        }
+        
+        const textoFila = fila.textContent.toLowerCase();
+        const puestoFila = fila.querySelector('.badge')?.textContent || '';
+        
+        const coincideNombre = nombre === '' || textoFila.includes(nombre);
+        const coincidePuesto = puesto === '' || puestoFila === puesto;
+        
+        if (coincideNombre && coincidePuesto) {
+            fila.style.display = '';
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+}
+
+function limpiarFiltros() {
+    document.getElementById('filtroNombre').value = '';
+    document.getElementById('filtroPuesto').value = '';
+    filtrarEmpleados();
+}
+
+
+function verEmpleado(id) {
+    fetch('index.php?controller=administrador&action=obtenerDetalleEmpleado&id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const emp = data.empleado;
+                const antiguedad = emp.ANTIGUEDAD;
+                
+                // Construir el HTML con los detalles
+                let antiguedadTexto = '';
+                if (antiguedad) {
+                    antiguedadTexto = `${antiguedad.años} años, ${antiguedad.meses} meses y ${antiguedad.dias} días`;
+                }
+                
+                const detalleHTML = `
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <strong>Empleado #${emp.ID_EMPLEADO}</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Nombre Completo:</strong>
+                            <p class="mb-0">${emp.NOMBRE} ${emp.APELLIDO}</p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Puesto:</strong>
+                            <p class="mb-0">
+                                <span class="badge" style="background-color: #F28322; font-size: 1em;">
+                                    ${emp.PUESTO}
+                                </span>
+                            </p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Teléfono:</strong>
+                            <p class="mb-0">
+                                <a href="tel:${emp.TELEFONO}" class="text-decoration-none">
+                                    <i class="bi bi-telephone"></i> ${emp.TELEFONO}
+                                </a>
+                            </p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Email:</strong>
+                            <p class="mb-0">
+                                ${emp.EMAIL ? 
+                                    `<a href="mailto:${emp.EMAIL}" class="text-decoration-none">
+                                        <i class="bi bi-envelope"></i> ${emp.EMAIL}
+                                    </a>` : 
+                                    '<span class="text-muted">No registrado</span>'}
+                            </p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Salario Mensual:</strong>
+                            <p class="mb-0 text-success fw-bold">
+                                <i class="bi bi-cash-stack"></i> $${parseFloat(emp.SALARIO).toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                            </p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Salario Anual:</strong>
+                            <p class="mb-0 text-primary fw-bold">
+                                $${(parseFloat(emp.SALARIO) * 12).toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                            </p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Fecha de Contratación:</strong>
+                            <p class="mb-0">${formatearFecha(emp.FECHA_CONTRATACION)}</p>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <strong>Antigüedad:</strong>
+                            <p class="mb-0">
+                                <span class="badge bg-primary">${antiguedadTexto}</span>
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                // Crear y mostrar modal
+                mostrarModalDetalle('Detalles del Empleado', detalleHTML);
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al obtener detalles del empleado');
+        });
+}
+
+
+function editarEmpleado(id) {
+    fetch('index.php?controller=administrador&action=obtenerEmpleadoParaEditar&id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const emp = data.empleado;
+                
+                // Llenar el formulario
+                document.getElementById('edit_id').value = emp.ID_EMPLEADO;
+                document.getElementById('edit_nombre').value = emp.NOMBRE;
+                document.getElementById('edit_apellido').value = emp.APELLIDO;
+                document.getElementById('edit_puesto').value = emp.PUESTO;
+                document.getElementById('edit_telefono').value = emp.TELEFONO;
+                document.getElementById('edit_email').value = emp.EMAIL || '';
+                document.getElementById('edit_salario').value = emp.SALARIO;
+                document.getElementById('edit_fecha_contratacion').value = emp.FECHA_CONTRATACION;
+                document.getElementById('edit_id_colonia').value = emp.ID_COLONIA || 1;
+                
+                // Mostrar modal
+                const modal = new bootstrap.Modal(document.getElementById('modalEditarEmpleado'));
+                modal.show();
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar datos del empleado');
+        });
+}
+
+
+function eliminarEmpleado(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar este empleado?\n\nEsta acción no se puede deshacer.')) {
+        const formData = new FormData();
+        formData.append('id', id);
+        
+        fetch('index.php?controller=administrador&action=eliminarEmpleado', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                mostrarMensaje('Empleado eliminado exitosamente', 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                alert('Error: ' + (data.Mensaje || 'No se pudo eliminar el empleado'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error de conexión. Por favor intente nuevamente.');
+        });
+    }
+}
+
+
+function formatearFecha(fecha) {
+    if (!fecha) return 'No disponible';
+    
+    const date = new Date(fecha + 'T00:00:00');
+    const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('es-MX', opciones);
+}
+
+
+function mostrarModalDetalle(titulo, contenidoHTML) {
+    // Remover modal anterior si existe
+    const modalAnterior = document.getElementById('modalDetalleEmpleado');
+    if (modalAnterior) {
+        modalAnterior.remove();
+    }
+    
+    // Crear nuevo modal
+    const modalHTML = `
+        <div class="modal fade" id="modalDetalleEmpleado" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-info-circle"></i> ${titulo}
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ${contenidoHTML}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Agregar al DOM
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Mostrar modal
+    const modal = new bootstrap.Modal(document.getElementById('modalDetalleEmpleado'));
+    modal.show();
+    
+    // Eliminar del DOM cuando se cierre
+    document.getElementById('modalDetalleEmpleado').addEventListener('hidden.bs.modal', function () {
+        this.remove();
+    });
+}
+
+
+function mostrarMensaje(mensaje, tipo = 'info') {
+    const iconos = {
+        'success': 'check-circle',
+        'danger': 'x-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle'
+    };
+    
+    const alerta = document.createElement('div');
+    alerta.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
+    alerta.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alerta.innerHTML = `
+        <i class="bi bi-${iconos[tipo] || 'info-circle'}"></i>
+        ${mensaje}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alerta);
+    
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+
+
+// Validar teléfono (solo números y guiones)
+document.querySelectorAll('input[type="tel"]').forEach(input => {
+    input.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9-]/g, '');
+    });
+});
+
+// Validar salario (solo números positivos)
+document.querySelectorAll('input[name="salario"]').forEach(input => {
+    input.addEventListener('input', function() {
+        if (parseFloat(this.value) < 0) {
+            this.value = 0;
+        }
+    });
+});
+
+// Validar email único (en tiempo real)
+let timeoutEmail;
+document.querySelectorAll('input[type="email"]').forEach(input => {
+    input.addEventListener('blur', function() {
+        const email = this.value.trim();
+        const idEmpleado = document.getElementById('edit_id')?.value || null;
+        
+        if (email && email.includes('@')) {
+            clearTimeout(timeoutEmail);
+            timeoutEmail = setTimeout(() => {
+                validarEmailUnico(email, idEmpleado);
+            }, 500);
+        }
+    });
+});
+
+function validarEmailUnico(email, excluirId = null) {
+    let url = 'index.php?controller=administrador&action=validarEmailEmpleado&email=' + encodeURIComponent(email);
+    if (excluirId) {
+        url += '&excluir=' + excluirId;
+    }
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK' && data.existe) {
+                mostrarMensaje('Este email ya está registrado para otro empleado', 'warning');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+document.getElementById('modalNuevoEmpleado')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formNuevoEmpleado').reset();
+    // Restaurar fecha por defecto
+    document.querySelector('#formNuevoEmpleado input[name="fecha_contratacion"]').value = '<?php echo date('Y-m-d'); ?>';
+});
+
+document.getElementById('modalEditarEmpleado')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formEditarEmpleado').reset();
+});
+
+
+let timeoutBusqueda;
+document.getElementById('filtroNombre')?.addEventListener('input', function() {
+    clearTimeout(timeoutBusqueda);
+    timeoutBusqueda = setTimeout(() => {
+        filtrarEmpleados();
+    }, 300);
+});
+
+document.getElementById('filtroPuesto')?.addEventListener('change', function() {
+    filtrarEmpleados();
+});
+
+function exportarCSV() {
+    window.location.href = 'index.php?controller=administrador&action=exportarEmpleadosCSV';
+}
+
+
+function mostrarResumenNomina() {
+    fetch('index.php?controller=administrador&action=obtenerEstadisticasEmpleados')
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const stats = data.estadisticas;
+                
+                const resumenHTML = `
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h6>Total Empleados</h6>
+                                    <h3>${stats.total_empleados}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h6>Puestos Diferentes</h6>
+                                    <h3>${stats.puestos_diferentes}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h6>Nómina Mensual</h6>
+                                    <h3>$${parseFloat(stats.nomina_total).toLocaleString('es-MX', {minimumFractionDigits: 2})}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h6>Salario Promedio</h6>
+                                    <h3>$${parseFloat(stats.salario_promedio).toLocaleString('es-MX', {minimumFractionDigits: 2})}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="alert alert-light">
+                                <strong>Nómina Anual Proyectada:</strong>
+                                $${(parseFloat(stats.nomina_total) * 12).toLocaleString('es-MX', {minimumFractionDigits: 2})}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                mostrarModalDetalle('Resumen de Nómina', resumenHTML);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Sistema de Empleados cargado correctamente');
+    
+    // Mostrar alertas de sesión si existen
+    <?php if (isset($_SESSION['mensaje'])): ?>
+        mostrarMensaje('<?php echo $_SESSION['mensaje']; ?>', 'success');
+        <?php unset($_SESSION['mensaje']); ?>
+    <?php endif; ?>
+    
+    <?php if (isset($_SESSION['error'])): ?>
+        mostrarMensaje('<?php echo $_SESSION['error']; ?>', 'danger');
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+});
+</script>
+
+<style>
+/* Estilos adicionales */
+.table tbody tr:hover {
+    background-color: rgba(140, 69, 28, 0.05);
+}
+
+.badge {
+    font-size: 0.85em;
+    padding: 0.35em 0.65em;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert.position-fixed {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #F28322;
+    box-shadow: 0 0 0 0.25rem rgba(242, 131, 34, 0.25);
+}
+</style>

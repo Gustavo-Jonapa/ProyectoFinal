@@ -56,15 +56,6 @@
                     </small>
                 </div>
             </div>
-            
-            <!-- Credenciales temporales para testing -->
-            <div class="alert alert-info mt-3">
-                <strong><i class="bi bi-info-circle"></i> Credenciales de prueba:</strong><br>
-                <small>
-                    Usuario: <code>admin</code><br>
-                    Contraseña: <code>admin123</code>
-                </small>
-            </div>
         </div>
     </div>
 </div>

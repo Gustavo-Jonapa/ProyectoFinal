@@ -376,3 +376,351 @@ function eliminarProveedor(id) {
     }
 }
 </script>
+<script>
+
+function filtrarProveedores() {
+    const nombre = document.getElementById('filtroNombre').value.toLowerCase();
+    const tipo = document.getElementById('filtroTipo').value;
+    const filas = document.querySelectorAll('#tablaProveedores tbody tr');
+    
+    filas.forEach(fila => {
+        // Evitar la fila de "no hay proveedores"
+        if (fila.querySelector('td[colspan]')) {
+            return;
+        }
+        
+        const textoFila = fila.textContent.toLowerCase();
+        const tipoBadge = fila.querySelector('.badge')?.textContent || '';
+        
+        const coincideNombre = nombre === '' || textoFila.includes(nombre);
+        const coincideTipo = tipo === '' || tipoBadge.includes(tipo);
+        
+        if (coincideNombre && coincideTipo) {
+            fila.style.display = '';
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+}
+
+function limpiarFiltros() {
+    document.getElementById('filtroNombre').value = '';
+    document.getElementById('filtroTipo').value = '';
+    filtrarProveedores();
+}
+
+function verProveedor(id) {
+    fetch('index.php?controller=administrador&action=obtenerDetalleProveedor&id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const proveedor = data.proveedor;
+                
+                // Construir el HTML con los detalles
+                const detalleHTML = `
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <strong>ID:</strong> ${proveedor.ID_PROVEEDOR}
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Estado:</strong>
+                            <span class="badge ${proveedor.ACTIVO ? 'bg-success' : 'bg-secondary'}">
+                                ${proveedor.ACTIVO ? 'Activo' : 'Inactivo'}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <strong>Nombre de la Empresa:</strong>
+                            <p class="mb-0">${proveedor.NOMBRE}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Persona de Contacto:</strong>
+                            <p class="mb-0">${proveedor.CONTACTO}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Teléfono:</strong>
+                            <p class="mb-0">
+                                <a href="tel:${proveedor.TELEFONO}" class="text-decoration-none">
+                                    <i class="bi bi-telephone"></i> ${proveedor.TELEFONO}
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <strong>Email:</strong>
+                            <p class="mb-0">
+                                ${proveedor.EMAIL ? 
+                                    `<a href="mailto:${proveedor.EMAIL}" class="text-decoration-none">
+                                        <i class="bi bi-envelope"></i> ${proveedor.EMAIL}
+                                    </a>` : 
+                                    '<span class="text-muted">No registrado</span>'}
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <strong>Tipo de Producto:</strong>
+                            <p class="mb-0">
+                                <span class="badge bg-primary">${proveedor.TIPO_PRODUCTO}</span>
+                            </p>
+                        </div>
+                        <div class="col-12">
+                            <strong>Dirección:</strong>
+                            <p class="mb-0">${proveedor.DIRECCION || '<span class="text-muted">No registrada</span>'}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Insertar en el modal
+                document.getElementById('detalleProveedor').innerHTML = detalleHTML;
+                
+                // Mostrar modal
+                const modal = new bootstrap.Modal(document.getElementById('modalVerProveedor'));
+                modal.show();
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al obtener detalles del proveedor');
+        });
+}
+
+function editarProveedor(id) {
+    fetch('index.php?controller=administrador&action=obtenerProveedorParaEditar&id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                const proveedor = data.proveedor;
+                
+                // Llenar el formulario
+                document.getElementById('edit_id').value = proveedor.ID_PROVEEDOR;
+                document.getElementById('edit_nombre').value = proveedor.NOMBRE;
+                document.getElementById('edit_contacto').value = proveedor.CONTACTO;
+                document.getElementById('edit_telefono').value = proveedor.TELEFONO;
+                document.getElementById('edit_email').value = proveedor.EMAIL || '';
+                document.getElementById('edit_tipo_producto').value = proveedor.TIPO_PRODUCTO;
+                document.getElementById('edit_direccion').value = proveedor.DIRECCION || '';
+                
+                // Mostrar modal
+                const modal = new bootstrap.Modal(document.getElementById('modalEditarProveedor'));
+                modal.show();
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar datos del proveedor');
+        });
+}
+
+function eliminarProveedor(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar este proveedor?\n\nEsta acción no se puede deshacer.')) {
+        const formData = new FormData();
+        formData.append('id', id);
+        
+        fetch('index.php?controller=administrador&action=eliminarProveedor', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                mostrarMensaje('Proveedor eliminado exitosamente', 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                alert('Error: ' + (data.Mensaje || 'No se pudo eliminar el proveedor'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error de conexión. Por favor intente nuevamente.');
+        });
+    }
+}
+
+function desactivarProveedor(id) {
+    if (confirm('¿Deseas desactivar este proveedor?\n\nPodrás reactivarlo más tarde.')) {
+        const formData = new FormData();
+        formData.append('id', id);
+        
+        fetch('index.php?controller=administrador&action=desactivarProveedor', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.Status === 'OK') {
+                mostrarMensaje('Proveedor desactivado exitosamente', 'warning');
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                alert('Error: ' + data.Mensaje);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error de conexión');
+        });
+    }
+}
+
+function activarProveedor(id) {
+    const formData = new FormData();
+    formData.append('id', id);
+    
+    fetch('index.php?controller=administrador&action=activarProveedor', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.Status === 'OK') {
+            mostrarMensaje('Proveedor activado exitosamente', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            alert('Error: ' + data.Mensaje);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error de conexión');
+    });
+}
+
+function mostrarMensaje(mensaje, tipo = 'info') {
+    // Crear elemento de alerta
+    const alerta = document.createElement('div');
+    alerta.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
+    alerta.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alerta.innerHTML = `
+        <i class="bi bi-${tipo === 'success' ? 'check-circle' : tipo === 'danger' ? 'x-circle' : 'info-circle'}"></i>
+        ${mensaje}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alerta);
+    
+    // Auto-remover después de 3 segundos
+    setTimeout(() => {
+        alerta.remove();
+    }, 3000);
+}
+
+// Validar teléfono (solo números)
+document.querySelectorAll('input[type="tel"]').forEach(input => {
+    input.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+});
+
+document.getElementById('modalNuevoProveedor')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formNuevoProveedor').reset();
+});
+
+document.getElementById('modalEditarProveedor')?.addEventListener('hidden.bs.modal', function () {
+    document.getElementById('formEditarProveedor').reset();
+});
+
+
+let timeoutBusqueda;
+document.getElementById('filtroNombre')?.addEventListener('input', function() {
+    clearTimeout(timeoutBusqueda);
+    timeoutBusqueda = setTimeout(() => {
+        filtrarProveedores();
+    }, 300); // Espera 300ms después de que el usuario deje de escribir
+});
+
+document.getElementById('filtroTipo')?.addEventListener('change', function() {
+    filtrarProveedores();
+});
+
+function exportarCSV() {
+    window.location.href = 'index.php?controller=administrador&action=exportarProveedoresCSV';
+}
+
+let formModificado = false;
+
+document.querySelectorAll('form input, form select, form textarea').forEach(campo => {
+    campo.addEventListener('change', function() {
+        formModificado = true;
+    });
+});
+
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function() {
+        formModificado = false;
+    });
+});
+
+window.addEventListener('beforeunload', function(e) {
+    if (formModificado) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Sistema de Proveedores cargado correctamente');
+    
+    // Aplicar filtros automáticamente si hay valores en URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('tipo')) {
+        document.getElementById('filtroTipo').value = urlParams.get('tipo');
+        filtrarProveedores();
+    }
+});
+</script>
+
+<style>
+/* Estilos adicionales para mejorar la UX */
+.table tbody tr:hover {
+    background-color: rgba(140, 69, 28, 0.05);
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.modal-backdrop.show {
+    opacity: 0.7;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #F28322;
+    box-shadow: 0 0 0 0.25rem rgba(242, 131, 34, 0.25);
+}
+
+/* Animación para mensajes toast */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert.position-fixed {
+    animation: slideInRight 0.3s ease-out;
+}
+
+/* Mejorar visibilidad de badges */
+.badge {
+    font-size: 0.85em;
+    padding: 0.35em 0.65em;
+}
+
+/* Indicador de carga */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+}
+</style>

@@ -1,6 +1,5 @@
 <div class="container-fluid my-4">
     <div class="row">
-        <!-- Sidebar -->
         <nav class="col-md-2 d-md-block sidebar" style="background-color: #8C451C; min-height: 90vh;">
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
@@ -271,7 +270,6 @@
                             <label class="form-label fw-bold">Mesa *</label>
                             <select name="mesa_id" class="form-select" required>
                                 <option value="">Seleccionar mesa</option>
-                                <!-- Las mesas se cargarían dinámicamente -->
                             </select>
                         </div>
                         <div class="col-12">
