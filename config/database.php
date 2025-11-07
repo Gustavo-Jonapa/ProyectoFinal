@@ -1,9 +1,9 @@
 <?php
     class Database{
-        private $host = ".\SQLEXPRESS";
-        private $db_name = "RESTAURANT";
-        private $username = "webmaster";
-        private $password = "Unach2025*";
+        private $host = "tcp:tresesencias.database.windows.net";
+        private $db_name = "Restaurant_db";
+        private $username = "proyectofinal";
+        private $password = "pf_tresesencias25";
         public $conn;
         public function getConnection() {
         $this->conn = null;
@@ -15,6 +15,14 @@
             echo "Error de conexión: " . $exception->getMessage();
         }
         return $this->conn;
+    }
+    public static function ruta(){
+        //return "http://localhost/TresEsencias/";
+        return "https://tresesencias.azurewebsites.net/";
+    }
+    public static function ruta_base_inicio(){
+        //return "/TresEsencias/";
+        return "/tresesencias.azurewebsites.net/";
     }
     }    
 ?>
