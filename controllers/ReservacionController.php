@@ -113,5 +113,23 @@ class ReservacionController {
             exit();
         }
     }
+    public function verificarDisponibilidad() {
+        header('Content-Type: application/json');
+        
+        $idMesa = $_GET['mesa'] ?? null;
+        $fecha = $_GET['fecha'] ?? null;
+        $hora = $_GET['hora'] ?? null;
+        
+        if (!$idMesa || !$fecha || !$hora) {
+            echo json_encode(['disponible' => false, 'mensaje' => 'Datos incompletos']);
+            exit();
+        }
+        
+        $reservacionModel = new Reservacion();
+        $disponible = $reservacionModel->verificarDisponibilidad($idMesa, $fecha, $hora);
+        
+        echo json_encode(['disponible' => $disponible]);
+        exit();
+    }
 }
 ?>

@@ -41,10 +41,10 @@
             </div>
         </div>
     </div>
-
+<!--
     <div class="row g-3 mb-4">
         <div class="col-md-3">
-            <div class="card text-white bg-success">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Confirmadas</h6>
                     <h2 class="mb-0">8</h2>
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-warning">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Pendientes</h6>
                     <h2 class="mb-0">3</h2>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-danger">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Canceladas</h6>
                     <h2 class="mb-0">2</h2>
@@ -68,7 +68,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-info">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Completadas</h6>
                     <h2 class="mb-0">15</h2>
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-
+-->
     <div class="card shadow-sm">
         <div class="card-header" style="background-color: #8C451C; color: white;">
             <h5 class="mb-0"><i class="bi bi-calendar-check"></i> Reservaciones</h5>

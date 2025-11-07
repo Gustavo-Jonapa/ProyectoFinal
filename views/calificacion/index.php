@@ -74,7 +74,7 @@
                     </form>
                 </div>
             </div>
-            
+            <!--
             <div class="card shadow-lg border-0 mb-5">
                 <div class="card-body p-4">
                     <h4 class="fw-bold mb-4" style="color: #8C451C;">Calificación Promedio</h4>
@@ -197,6 +197,7 @@
                     </div>
                 </div>
             </div>
+-->
         </div>
     </div>
 </div>

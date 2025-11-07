@@ -16,7 +16,7 @@
     <!-- Estadísticas -->
     <div class="row g-3 mb-4">
         <div class="col-md-3">
-            <div class="card text-white bg-primary">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Total Empleados</h6>
                     <h2 class="mb-0"><?php echo count($empleados); ?></h2>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-success">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Meseros</h6>
                     <h2 class="mb-0">
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-info">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Cocineros</h6>
                     <h2 class="mb-0">
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-warning">
+            <div class="card text-black bg-light">
                 <div class="card-body">
                     <h6 class="card-title">Otros</h6>
                     <h2 class="mb-0">

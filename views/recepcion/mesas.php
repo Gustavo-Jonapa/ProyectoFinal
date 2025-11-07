@@ -8,7 +8,7 @@
 
     <div class="row g-3 mb-4">
         <div class="col-md-3">
-            <div class="card text-white bg-success">
+            <div class="card text-black bg-light">
                 <div class="card-body text-center">
                     <h2 class="mb-0">4</h2>
                     <p class="mb-0">Mesas Disponibles</p>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-danger">
+            <div class="card text-black bg-light">
                 <div class="card-body text-center">
                     <h2 class="mb-0">5</h2>
                     <p class="mb-0">Mesas Ocupadas</p>
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white bg-warning">
+            <div class="card text-black bg-light">
                 <div class="card-body text-center">
                     <h2 class="mb-0">3</h2>
                     <p class="mb-0">Mesas Reservadas</p>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white" style="background-color: #8C451C;">
+            <div class="card text-black bg-light">
                 <div class="card-body text-center">
                     <h2 class="mb-0">12</h2>
                     <p class="mb-0">Total de Mesas</p>

@@ -120,7 +120,7 @@
                         </div>
                         <h3 class="fw-bold mb-3">Conócenos</h3>
                         <p class="text-muted">
-                            Somos un restaurante familiar con más de 20 años de experiencia. 
+                            Somos un restaurante familiar. 
                             Nuestros chefs preparan cada platillo con ingredientes frescos y de la más alta calidad. 
                             Nuestra pasión es brindar momentos inolvidables a cada uno de nuestros comensales.
                         </p>
@@ -138,15 +138,15 @@
                         <div class="contact-info text-start">
                             <p class="mb-2">
                                 <i class="bi bi-telephone text-black"></i> 
-                                <strong>Teléfono:</strong> 961-
+                                <strong>Teléfono:</strong> 961-849-4215
                             </p>
                             <p class="mb-2">
                                 <i class="bi bi-whatsapp text-black"></i> 
-                                <strong>WhatsApp:</strong> 961-
+                                <strong>WhatsApp:</strong> 961-849-4215
                             </p>
                             <p class="mb-2">
                                 <i class="bi bi-envelope text-black"></i> 
-                                <strong>Email:</strong> 
+                                <strong>Email:</strong> contacto@tresesencias.com
                             </p>
                         </div>
                     </div>

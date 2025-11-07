@@ -13,12 +13,12 @@
                 <div class="col-md-4 mb-3">
                     <i class="bi bi-telephone-fill fs-4" style="color: #F28322;"></i>
                     <strong class="d-block mt-2">Teléfono</strong>
-                    <p class="text-muted mb-0">961-</p>
+                    <p class="text-muted mb-0">961-849-4215</p>
                 </div>
                 <div class="col-md-4 mb-3">
                     <i class="bi bi-whatsapp fs-4" style="color: #F28322;"></i>
                     <strong class="d-block mt-2">WhatsApp</strong>
-                    <p class="text-muted mb-0">961-</p>
+                    <p class="text-muted mb-0">961-849-4215</p>
                 </div>
             </div>
         </div>
@@ -249,5 +249,35 @@ function cancelarReservacion(id) {
             }
         });
     }
+function verificarDisponibilidadMesa(idMesa) {
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    
+    if (!fecha || !hora) {
+        alert('Selecciona primero la fecha y hora');
+        return;
+    }
+    
+    fetch(`index.php?controller=reservacion&action=verificarDisponibilidad&mesa=${idMesa}&fecha=${fecha}&hora=${hora}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.disponible) {
+                alert('Esta mesa no está disponible para la fecha y hora seleccionadas');
+                // Deshabilitar el radio button
+                document.getElementById('mesa' + idMesa).disabled = true;
+            }
+        });
+}
+
+document.getElementById('fecha').addEventListener('change', actualizarDisponibilidad);
+document.getElementById('hora').addEventListener('change', actualizarDisponibilidad);
+
+function actualizarDisponibilidad() {
+    const mesas = document.querySelectorAll('.mesa-item');
+    mesas.forEach(mesa => {
+        const idMesa = mesa.dataset.mesaId;
+        verificarDisponibilidadMesa(idMesa);
+    });
+}
 }
 </script>

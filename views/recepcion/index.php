@@ -40,18 +40,18 @@
                     </a>
                 </div>
             </div>
-
+<!--
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
-                    <div class="card text-white" style="background-color: #F28322;">
+                    <div class="card text-black bg-light">
                         <div class="card-body">
                             <h5 class="card-title">Reservaciones Hoy</h5>
-                            <h2 class="mb-0">12</h2>
+                            <h2 class="mb-0">3</h2>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card text-white" style="background-color: #8C451C;">
+                    <div class="card text-black bg-light">
                         <div class="card-body">
                             <h5 class="card-title">Mesas Ocupadas</h5>
                             <h2 class="mb-0">8/12</h2>
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card text-white bg-success">
+                    <div class="card text-black bg-light">
                         <div class="card-body">
                             <h5 class="card-title">Clientes Registrados</h5>
                             <h2 class="mb-0">245</h2>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card text-white bg-info">
+                    <div class="card text-black bg-light">
                         <div class="card-body">
                             <h5 class="card-title">Pendientes</h5>
                             <h2 class="mb-0">3</h2>
@@ -75,7 +75,7 @@
                     </div>
                 </div>
             </div>
-
+-->
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
                     <div class="card h-100 shadow-sm">

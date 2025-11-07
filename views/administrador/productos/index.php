@@ -16,7 +16,7 @@
     <!-- Estadísticas -->
     <div class="row g-3 mb-4">
         <div class="col-md-3">
-            <div class="card text-white h-100" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">
+            <div class="card text-black h-100 bg-light" >
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -28,8 +28,9 @@
                 </div>
             </div>
         </div>
+        <!--
         <div class="col-md-3">
-            <div class="card text-white h-100 bg-success">
+            <div class="card text-black h-100 bg-light">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -48,8 +49,9 @@
                 </div>
             </div>
         </div>
+                            -->
         <div class="col-md-3">
-            <div class="card text-white h-100 bg-danger">
+            <div class="card text-black h-100 bg-light">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -68,8 +70,10 @@
                 </div>
             </div>
         </div>
+                            
+        <!--
         <div class="col-md-3">
-            <div class="card text-white h-100 bg-warning">
+            <div class="card text-black h-100 bg">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -95,7 +99,7 @@
             </div>
         </div>
     </div>
-
+                            -->
     <!-- Filtros -->
     <div class="card mb-4 shadow-sm">
         <div class="card-body">
@@ -233,7 +237,11 @@
                             <label class="form-label fw-bold">Proveedor (opcional)</label>
                             <select name="id_proveedor" class="form-select">
                                 <option value="">Sin proveedor asignado</option>
-                                <!-- Aquí se cargarían los proveedores desde la BD -->
+                                <?php foreach ($proveedores as $proveedor): ?>
+                                    <option value="<?php echo $proveedor['ID_PROVEEDOR']; ?>">
+                                        <?php echo htmlspecialchars($proveedor['NOMBRE']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="col-12">

@@ -16,7 +16,7 @@
     <!-- Estadísticas -->
     <div class="row g-3 mb-4">
         <div class="col-md-3">
-            <div class="card text-white h-100" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+            <div class="card text-black h-100 bg-light">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white h-100 bg-success">
+            <div class="card text-black h-100 bg-light">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white h-100 bg-info">
+            <div class="card text-black h-100 bg-light">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card text-white h-100 bg-warning">
+            <div class="card text-black h-100 bg-light">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>

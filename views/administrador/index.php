@@ -30,7 +30,7 @@
                         </a>
                     </li>
                     <li class="nav-item mb-2">
-                        <a class="nav-link text-white" href="index.php?controller=menu">
+                        <a class="nav-link text-white" href="index.php?controller=menuAdmin">
                             <i class="bi bi-journal-text"></i> Menú
                         </a>
                     </li>
@@ -56,6 +56,7 @@
             </div>
 
             <!-- Tarjetas de Estadísticas -->
+             <!--
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
                     <div class="card text-white h-100" style="background: linear-gradient(135deg, #F28322 0%, #8C451C 100%);">
@@ -114,7 +115,7 @@
                     </div>
                 </div>
             </div>
-
+-->
             <!-- Accesos Rápidos -->
             <div class="row g-3 mb-4">
                 <div class="col-12">
@@ -179,6 +180,7 @@
             </div>
 
             <!-- Alertas -->
+             <!--
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="card shadow-sm border-danger">
@@ -237,6 +239,7 @@
                     </div>
                 </div>
             </div>
+-->
         </main>
     </div>
 </div>
