@@ -23,7 +23,7 @@
                     
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?controller=administrador">
-                            <i class="bi bi-speedometer2"></i> Dashboard
+                            <i class="bi bi-speedometer2"></i> Principal
                         </a>
                     </li>
                     <li class="nav-item">

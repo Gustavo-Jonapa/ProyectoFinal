@@ -6,7 +6,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
                         <a class="nav-link text-white active" href="index.php?controller=administrador&action=index">
-                            <i class="bi bi-speedometer2"></i> Dashboard
+                            <i class="bi bi-speedometer2"></i> Principal
                         </a>
                     </li>
                     <li class="nav-item mb-2">
@@ -42,17 +42,8 @@
         <main class="col-md-10 ms-sm-auto px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2 fw-bold" style="color: #8C451C;">
-                    <i class="bi bi-speedometer2"></i> Panel de Administración
+                    <i class="bi"></i> Panel de Administración
                 </h1>
-                <div>
-                    <span class="me-3">
-                        <i class="bi bi-person-circle"></i> 
-                        <?php echo $_SESSION['admin_nombre'] ?? 'Administrador'; ?>
-                    </span>
-                    <a href="index.php?controller=auth&action=logout" class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-                    </a>
-                </div>
             </div>
 
             <!-- Tarjetas de Estadísticas -->

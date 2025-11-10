@@ -30,15 +30,6 @@
         <main class="col-md-10 ms-sm-auto px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2 fw-bold" style="color: #8C451C;">Panel de Recepción</h1>
-                <div>
-                    <span class="me-3">
-                        <i class="bi bi-person-circle"></i> 
-                        <?php echo $_SESSION['recepcion_nombre'] ?? 'Recepcionista'; ?>
-                    </span>
-                    <a href="index.php?controller=auth&action=logout" class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-                    </a>
-                </div>
             </div>
 <!--
             <div class="row g-3 mb-4">
@@ -120,71 +111,34 @@
                     <h5 class="mb-0"><i class="bi bi-calendar-day"></i> Reservaciones de Hoy</h5>
                 </div>
                 <div class="card-body">
+                    <?php if (!empty($reservacionesHoy)): ?>
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Hora</th>
                                     <th>Cliente</th>
-                                    <th>Teléfono</th>
-                                    <th>Mesa</th>
                                     <th>Personas</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                    <th>Mesa</th>
+                                    <th>Notas</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php foreach ($reservacionesHoy as $reserva): ?>
                                 <tr>
-                                    <td>13:00</td>
-                                    <td>Juan Pérez</td>
-                                    <td>961-123-4567</td>
-                                    <td>Mesa 5</td>
-                                    <td>4</td>
-                                    <td><span class="badge bg-success">Confirmada</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info text-white">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-warning">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                    </td>
+                                    <td><?php echo htmlspecialchars(date('H:i', strtotime($reserva['hora']))); ?></td>
+                                    <td><?php echo htmlspecialchars($reserva['cliente_nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($reserva['personas']); ?></td>
+                                    <td><?php echo htmlspecialchars($reserva['mesa_nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($reserva['notas']); ?></td>
                                 </tr>
-                                <tr>
-                                    <td>14:30</td>
-                                    <td>María García</td>
-                                    <td>961-987-6543</td>
-                                    <td>Mesa 2</td>
-                                    <td>2</td>
-                                    <td><span class="badge bg-warning">Pendiente</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info text-white">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-warning">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>19:00</td>
-                                    <td>Carlos Mendoza</td>
-                                    <td>961-555-1234</td>
-                                    <td>Mesa 8</td>
-                                    <td>6</td>
-                                    <td><span class="badge bg-success">Confirmada</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info text-white">
-                                            <i class="bi bi-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-warning">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
+                    <?php else: ?>
+                    <p class="text-muted">No hay reservaciones para hoy.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </main>

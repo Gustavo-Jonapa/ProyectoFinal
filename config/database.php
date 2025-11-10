@@ -16,5 +16,13 @@
         }
         return $this->conn;
     }
+    public static function ruta(){
+        return "http://localhost/proyectofinal/";
+        //return "https://tresesencias.azurewebsites.net/";
+    }
+    public static function ruta_base_inicio(){
+        return "/proyectofinal/";
+        //return "/tresesencias.azurewebsites.net/";
+    }
     }    
 ?>
