@@ -24,5 +24,5 @@
         return "/proyectofinal/";
         //return "/tresesencias.azurewebsites.net/";
     }
-    }    
+    }
 ?>
